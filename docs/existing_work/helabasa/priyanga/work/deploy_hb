@@ -1,0 +1,6 @@
+sudo rm -rf ~/webapps/helabasa/WEB-INF/classes/helabasa
+sudo cp -rf ./helabasa/src/helabasa ~/webapps/helabasa/WEB-INF/classes/
+sudo rm -f ~/webapps/helabasa/*.*
+sudo cp -rf ./helabasa/html/*.* ~/webapps/helabasa/
+sudo rm -f ~/webapps/helabasa/WEB-INF/web.xml
+sudo cp -rf ./helabasa/xml/web.xml ~/webapps/helabasa/WEB-INF/

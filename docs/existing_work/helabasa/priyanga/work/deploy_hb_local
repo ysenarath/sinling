@@ -1,0 +1,2 @@
+sudo rm -rf ~/bin/classes/helabasa
+sudo cp -rf ./helabasa/src/helabasa ~/bin/classes/

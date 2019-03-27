@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<servlet>
+  <servlet-name>Sandhi</servlet-name>
+  <servlet-class>helabasa.servlets.Sandhi</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>Sandhi</servlet-name>
+  <url-pattern>/sandhi</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>Sandhi</servlet-name>
+  <url-pattern>/helabasa/sandhi</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>SandhiTest</servlet-name>
+  <servlet-class>helabasa.servlets.SandhiTest</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>SandhiTest</servlet-name>
+  <url-pattern>/sandhi_test</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>SandhiTest</servlet-name>
+  <url-pattern>/helabasa/sandhi_test</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>WordAnalyzer</servlet-name>
+  <servlet-class>helabasa.servlets.WordAnalyzer</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>WordAnalyzer</servlet-name>
+  <url-pattern>/word_analyzer</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>WordAnalyzer</servlet-name>
+  <url-pattern>/helabasa/word_analyzer</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>WordFrequencyAnalyzer</servlet-name>
+  <servlet-class>helabasa.servlets.WordFrequencyAnalyzer</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>WordFrequencyAnalyzer</servlet-name>
+  <url-pattern>/word_counter</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>WordFrequencyAnalyzer</servlet-name>
+  <url-pattern>/helabasa/word_counter</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>NounConjugator</servlet-name>
+  <servlet-class>helabasa.servlets.NounConjugator</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>NounConjugator</servlet-name>
+  <url-pattern>/conjugator</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>NounConjugator</servlet-name>
+  <url-pattern>/helabasa/conjugator</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>AdminNounConjugator</servlet-name>
+  <servlet-class>helabasa.servlets.AdminNounConjugator</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>AdminNounConjugator</servlet-name>
+  <url-pattern>/conjugator_admin</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>AdminNounConjugator</servlet-name>
+  <url-pattern>/helabasa/conjugator_admin</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>NounAnalyzer</servlet-name>
+  <servlet-class>helabasa.servlets.NounAnalyzer</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>NounAnalyzer</servlet-name>
+  <url-pattern>/noun_analyzer</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>NounAnalyzer</servlet-name>
+  <url-pattern>/helabasa/noun_analyzer</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>KBMan</servlet-name>
+  <servlet-class>helabasa.servlets.KnowledgeBaseManager</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>KBMan</servlet-name>
+  <url-pattern>/kb_man</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>KBMan</servlet-name>
+  <url-pattern>/helabasa/kb_man</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>AdminPage</servlet-name>
+  <servlet-class>helabasa.servlets.AdminPage</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>AdminPage</servlet-name>
+  <url-pattern>/admin_page</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>AdminPage</servlet-name>
+  <url-pattern>/helabasa/admin_page</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>NounClassTest</servlet-name>
+  <servlet-class>helabasa.servlets.NounClassTest</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>NounClassTest</servlet-name>
+  <url-pattern>/noun_class_test</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>NounClassTest</servlet-name>
+  <url-pattern>/helabasa/noun_class_test</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>KBView</servlet-name>
+  <servlet-class>helabasa.servlets.KnowledgeBaseViewer</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>KBView</servlet-name>
+  <url-pattern>/kb_view</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>KBView</servlet-name>
+  <url-pattern>/helabasa/kb_view</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>NRView</servlet-name>
+  <servlet-class>helabasa.servlets.ConjugationRuleList</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>NRView</servlet-name>
+  <url-pattern>/nr_view</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>NRView</servlet-name>
+  <url-pattern>/helabasa/nr_view</url-pattern>
+</servlet-mapping>
+<servlet>
+  <servlet-name>VisandhiTest</servlet-name>
+  <servlet-class>helabasa.servlets.VisandhiTest</servlet-class>
+</servlet>
+ <servlet-mapping>
+  <servlet-name>VisandhiTest</servlet-name>
+  <url-pattern>/visandhi_test</url-pattern>
+</servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>VisandhiTest</servlet-name>
+  <url-pattern>/helabasa/visandhi_test</url-pattern>
+</servlet-mapping>
+</web-app>

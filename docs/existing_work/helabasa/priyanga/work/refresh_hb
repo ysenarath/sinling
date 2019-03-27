@@ -1,0 +1,4 @@
+./build_hb
+./deploy_hb
+sudo /opt/tomcat/bin/shutdown.sh
+sudo /opt/tomcat/bin/startup.sh

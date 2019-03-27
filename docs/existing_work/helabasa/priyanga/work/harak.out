@@ -1,0 +1,356 @@
+Starting Test ...
+================== TEST 1 ===================
+HBCorpus::GetWordFrequency : [හරක්] = 1346<br>
+f(හරක්)=1346
+================= TEST 2 BEGIN ==================
+AddFixedRule : Type=2 : SubType=0 : Suffix= විසින්
+AddFixedRule : Type=2 : SubType=1 : Suffix= විසින්
+AddFixedRule : Type=2 : SubType=2 : Suffix= විසින්
+AddFixedRule : Type=7 : SubType=0 : Suffix= වෙත
+AddFixedRule : Type=7 : SubType=1 : Suffix= වෙත
+AddFixedRule : Type=7 : SubType=2 : Suffix= වෙත
+AddFixedRule : Type=7 : SubType=0 : Suffix= කෙරෙහි
+AddFixedRule : Type=7 : SubType=1 : Suffix= කෙරෙහි
+AddFixedRule : Type=7 : SubType=2 : Suffix= කෙරෙහි
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=0
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=2
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=0 : ST=0
+HBSuffixSet::AddSuffix : Empty Suffix Ignored : T=1 : ST=0
+HBNoun::SynthesizeNoun : RuleID=1
+GenerateForms : Exception : Lemma : හරක් : ID=1 : T=0 : ST=2 : Form=හරක්
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරකා : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]
+HBCorpus::GetWordFrequency : Appending word : හරක්කා : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[ආ-3462]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකා','හරක්කා')<br>
+HBCorpus::GetWordFrequency : [හරකා] = 237
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරකා]=1185<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්කා]=IGNORE<br>
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [එ+ක්] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [එ+ක්] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [එ+ක්] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [එ+ක්] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [එ+ක්] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [එ+ක්] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [එ+ක්] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරකෙක් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[එ-3473]+[ක්-3482]
+HBCorpus::GetWordFrequency : Appending word : හරක්කෙක් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[එ-3473]+[ක්-3482]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකෙක්','හරක්කෙක්')<br>
+HBCorpus::GetWordFrequency : [හරකෙක්] = 103
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරකෙක්]=515<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්කෙක්]=IGNORE<br>
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [ආ] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරකා : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]
+HBCorpus::GetWordFrequency : Appending word : හරක්කා : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[ආ-3462]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකා','හරක්කා')<br>
+HBCorpus::GetWordFrequency : [හරකා] = 237
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරකා]=1185<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්කා]=IGNORE<br>
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ+ක්+උ] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ+ක්+උ] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ+ක්+උ] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ+ක්+උ] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ+ක්+උ] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ+ක්+උ] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ+ක්+උ] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරකකු : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]+[ක්-3482]+[උ-3467]
+HBCorpus::GetWordFrequency : Appending word : හරක්කකු : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[අ-3461]+[ක්-3482]+[උ-3467]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකකු','හරක්කකු')<br>
+HBCorpus::GetWordFrequency : [හරකකු] = 16
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරකකු]=80<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්කකු]=IGNORE<br>
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරකුන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරක්කුන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[උ-3467]+[න්-3505]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකුන්','හරක්කුන්')<br>
+HBCorpus::GetWordFrequency : [හරකුන්] = 237
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරකුන්]=1185<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්කුන්]=IGNORE<br>
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [අ] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරක : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]
+HBCorpus::GetWordFrequency : Appending word : හරක්ක : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[අ-3461]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරක','හරක්ක')<br>
+HBCorpus::GetWordFrequency : [හරක] = 33
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරක]=165<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්ක]=IGNORE<br>
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඉ] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඉ] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඉ] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඉ] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඉ] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඉ] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඉ] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරකුනි : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]+[ඉ-3465]
+HBCorpus::GetWordFrequency : Appending word : හරක්කුනි : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[උ-3467]+[න්-3505]+[ඉ-3465]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකුනි','හරක්කුනි')<br>
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරකුනි]=IGNORE<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්කුනි]=IGNORE<br>
+GenerateForms : RuleID=1 : RuleName=ඇත් ගණය
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඒ] : Method=0 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඒ] : Method=1 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඒ] : Method=2 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඒ] : Method=3 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඒ] : Method=4 : Results=1<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඒ] : Method=5 : Results=2<br>
+
+HBStandardJoinRuleSet::Join : [හ්+අ+ර්+අ+ක්] + [උ+න්+ඒ] : Method=6 : Results=2<br>
+
+HBNounFormScoringAlogorithm::Evaluate : 2 results.<br>
+HBCorpus::GetWordFrequency : Appending word : හරකුනේ : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]+[ඒ-3474]
+HBCorpus::GetWordFrequency : Appending word : හරක්කුනේ : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ක්-3482]+[උ-3467]+[න්-3505]+[ඒ-3474]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකුනේ','හරක්කුනේ')<br>
+HBCorpus::GetWordFrequency : [හරකුනේ] = 1
+HBNounFormScoringAlogorithm::Evaluate [0] : Method=2 : Score[හරකුනේ]=5<br>
+HBNounFormScoringAlogorithm::Evaluate [1] : Method=10 : Score[හරක්කුනේ]=IGNORE<br>
+GenerateDerivedForms : Type=3 : SubType=0 : Suffix=ගෙන් : KRForms=1
+HBCorpus::GetWordFrequency : [හරකාගෙන්] = 1<br>
+GenerateDerivedForms : Word : හරකාගෙන්
+GenerateDerivedForms : Type=3 : SubType=1 : Suffix=ගෙන් : KRForms=1
+GenerateDerivedForms : Word : හරකකුගෙන්
+GenerateDerivedForms : Type=3 : SubType=2 : Suffix=ගෙන් : KRForms=1
+HBCorpus::GetWordFrequency : [හරකුන්ගෙන්] = 7<br>
+GenerateDerivedForms : Word : හරකුන්ගෙන්
+GenerateDerivedForms : Type=4 : SubType=0 : Suffix=ට : KRForms=1
+HBCorpus::GetWordFrequency : [හරකාට] = 14<br>
+GenerateDerivedForms : Word : හරකාට
+GenerateDerivedForms : Type=4 : SubType=1 : Suffix=ට : KRForms=1
+HBCorpus::GetWordFrequency : [හරකකුට] = 2<br>
+GenerateDerivedForms : Word : හරකකුට
+GenerateDerivedForms : Type=4 : SubType=2 : Suffix=ට : KRForms=1
+HBCorpus::GetWordFrequency : [හරකුන්ට] = 50<br>
+GenerateDerivedForms : Word : හරකුන්ට
+GenerateDerivedForms : Type=5 : SubType=0 : Suffix=ගෙන් : KRForms=1
+HBCorpus::GetWordFrequency : [හරකාගෙන්] = 1<br>
+GenerateDerivedForms : Word : හරකාගෙන්
+GenerateDerivedForms : Type=5 : SubType=1 : Suffix=ගෙන් : KRForms=1
+GenerateDerivedForms : Word : හරකකුගෙන්
+GenerateDerivedForms : Type=5 : SubType=2 : Suffix=ගෙන් : KRForms=1
+HBCorpus::GetWordFrequency : [හරකුන්ගෙන්] = 7<br>
+GenerateDerivedForms : Word : හරකුන්ගෙන්
+GenerateDerivedForms : Type=6 : SubType=0 : Suffix=ගේ : KRForms=1
+HBCorpus::GetWordFrequency : [හරකාගේ] = 14<br>
+GenerateDerivedForms : Word : හරකාගේ
+GenerateDerivedForms : Type=6 : SubType=1 : Suffix=ගේ : KRForms=1
+HBCorpus::GetWordFrequency : [හරකකුගේ] = 3<br>
+GenerateDerivedForms : Word : හරකකුගේ
+GenerateDerivedForms : Type=6 : SubType=2 : Suffix=ගේ : KRForms=1
+HBCorpus::GetWordFrequency : [හරකුන්ගේ] = 26<br>
+GenerateDerivedForms : Word : හරකුන්ගේ
+GenerateFixedDerivedForms : Type=2 : SubType=0 : Suffix= විසින්
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකා] + [ විසින්]
+GenerateFixedDerivedForms : Type=2 : SubType=1 : Suffix= විසින්
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකකු] + [ විසින්]
+GenerateFixedDerivedForms : Type=2 : SubType=2 : Suffix= විසින්
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකුන්] + [ විසින්]
+GenerateFixedDerivedForms : Type=7 : SubType=0 : Suffix= වෙත
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකා] + [ වෙත]
+GenerateFixedDerivedForms : Type=7 : SubType=1 : Suffix= වෙත
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකකු] + [ වෙත]
+GenerateFixedDerivedForms : Type=7 : SubType=2 : Suffix= වෙත
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකුන්] + [ වෙත]
+GenerateFixedDerivedForms : Type=7 : SubType=0 : Suffix= කෙරෙහි
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකා] + [ කෙරෙහි]
+GenerateFixedDerivedForms : Type=7 : SubType=1 : Suffix= කෙරෙහි
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකකු] + [ කෙරෙහි]
+GenerateFixedDerivedForms : Type=7 : SubType=2 : Suffix= කෙරෙහි
+GenerateFixedDerivedForms : KRForms=1
+GenerateFixedDerivedForms : Merging [හරකුන්] + [ කෙරෙහි]
+HBCorpus::GetWordFrequency : Appending word : හරකා : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]
+HBCorpus::GetWordFrequency : Appending word : හරකෙක් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[එ-3473]+[ක්-3482]
+HBCorpus::GetWordFrequency : Appending word : හරක් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]
+HBCorpus::GetWordFrequency : Appending word : හරකා : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]
+HBCorpus::GetWordFrequency : Appending word : හරකකු : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]+[ක්-3482]+[උ-3467]
+HBCorpus::GetWordFrequency : Appending word : හරකුන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරකාගෙන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]+[ග්-3484]+[එ-3473]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරකකුගෙන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]+[ක්-3482]+[උ-3467]+[ග්-3484]+[එ-3473]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරකුන්ගෙන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]+[ග්-3484]+[එ-3473]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරකාට : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]+[ට්-3495]+[අ-3461]
+HBCorpus::GetWordFrequency : Appending word : හරකකුට : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]+[ක්-3482]+[උ-3467]+[ට්-3495]+[අ-3461]
+HBCorpus::GetWordFrequency : Appending word : හරකුන්ට : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]+[ට්-3495]+[අ-3461]
+HBCorpus::GetWordFrequency : Appending word : හරකාගෙන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]+[ග්-3484]+[එ-3473]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරකකුගෙන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]+[ක්-3482]+[උ-3467]+[ග්-3484]+[එ-3473]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරකුන්ගෙන් : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]+[ග්-3484]+[එ-3473]+[න්-3505]
+HBCorpus::GetWordFrequency : Appending word : හරකාගේ : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[ආ-3462]+[ග්-3484]+[ඒ-3474]
+HBCorpus::GetWordFrequency : Appending word : හරකකුගේ : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]+[ක්-3482]+[උ-3467]+[ග්-3484]+[ඒ-3474]
+HBCorpus::GetWordFrequency : Appending word : හරකුන්ගේ : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]+[ග්-3484]+[ඒ-3474]
+HBCorpus::GetWordFrequency : Appending word : හරක : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[අ-3461]
+HBCorpus::GetWordFrequency : Appending word : හරකුනේ : [හ්-3524]+[අ-3461]+[ර්-3515]+[අ-3461]+[ක්-3482]+[උ-3467]+[න්-3505]+[ඒ-3474]
+HBCorpus::GetWordFrequency(list) : SQL : select word, frequency from hbc_words where word in ('හරකා','හරකෙක්','හරක්','හරකා','හරකකු','හරකුන්','හරකාගෙන්','හරකකුගෙන්','හරකුන්ගෙන්','හරකාට','හරකකුට','හරකුන්ට','හරකාගෙන්','හරකකුගෙන්','හරකුන්ගෙන්','හරකාගේ','හරකකුගේ','හරකුන්ගේ','හරක','හරකුනේ')<br>
+HBCorpus::GetWordFrequency : [හරක] = 33
+HBCorpus::GetWordFrequency : [හරකකු] = 16
+HBCorpus::GetWordFrequency : [හරකකුගේ] = 3
+HBCorpus::GetWordFrequency : [හරකකුට] = 2
+HBCorpus::GetWordFrequency : [හරක්] = 1346
+HBCorpus::GetWordFrequency : [හරකා] = 237
+HBCorpus::GetWordFrequency : [හරකාගෙන්] = 1
+HBCorpus::GetWordFrequency : [හරකාගේ] = 14
+HBCorpus::GetWordFrequency : [හරකාට] = 14
+HBCorpus::GetWordFrequency : [හරකුන්] = 237
+HBCorpus::GetWordFrequency : [හරකුන්ගෙන්] = 7
+HBCorpus::GetWordFrequency : [හරකුන්ගේ] = 26
+HBCorpus::GetWordFrequency : [හරකුන්ට] = 50
+HBCorpus::GetWordFrequency : [හරකුනේ] = 1
+HBCorpus::GetWordFrequency : [හරකෙක්] = 103
+HBAvailabilityBasedScoringAlgorithm::Evaluate : [හරක්] for 20 forms.
+NOUN : Lemma=හරක් : Rule=ඇත් ගණය : Score=108055
+==============================================
+
+================== TEST 2 END ===================
+NOUN : Lemma=හරක් : Rule=ඇත් ගණය : Score=108055
+==============================================
+
+ප්‍රථමා-DS = හරකා [237]
+ප්‍රථමා-IS = හරකෙක් [206]
+ප්‍රථමා-PL = හරක් [ * ] [1346]
+කර්ම-DS = හරකා [474]
+කර්ම-IS = හරකකු [32]
+කර්ම-PL = හරකුන් [474]
+කර්තෘ-DS = හරකා විසින් [0]
+කර්තෘ-IS = හරකකු විසින් [0]
+කර්තෘ-PL = හරකුන් විසින් [0]
+කරණ-DS = හරකාගෙන් [1]
+කරණ-IS = හරකකුගෙන් [0]
+කරණ-PL = හරකුන්ගෙන් [7]
+සම්ප්‍රදාන-DS = හරකාට [28]
+සම්ප්‍රදාන-IS = හරකකුට [4]
+සම්ප්‍රදාන-PL = හරකුන්ට [100]
+අවධි-DS = හරකාගෙන් [2]
+අවධි-IS = හරකකුගෙන් [0]
+අවධි-PL = හරකුන්ගෙන් [14]
+සම්බන්ධ-DS = හරකාගේ [28]
+සම්බන්ධ-IS = හරකකුගේ [6]
+සම්බන්ධ-PL = හරකුන්ගේ [52]
+ආධාර-DS = හරකා වෙත [0], හරකා කෙරෙහි [0]
+ආධාර-IS = හරකකු වෙත [0], හරකකු කෙරෙහි [0]
+ආධාර-PL = හරකුන් වෙත [0], හරකුන් කෙරෙහි [0]
+ආලපන-DS = හරක [66]
+ආලපන-IS = NOT_DEFINED
+ආලපන-PL = හරකුනේ [2]

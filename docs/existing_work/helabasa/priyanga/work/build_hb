@@ -1,0 +1,2 @@
+cd ~/work/helabasa/src
+javac -encoding utf-16be  -classpath '/usr/local/tomcat7/lib/servlet-api.jar:/usr/local/tomcat7/webapps/helabasa/WEB-INF/libmysql-connector-java-5.1.39.jar' helabasa/*.java helabasa/gui/*.java helabasa/nouns/*.java helabasa/nouns/scoring/*.java helabasa/sandhi/*.java helabasa/sandhi/scoring/*.java helabasa/servlets/*.java helabasa/servlets/utils/*.java helabasa/verbs/*.java helabasa/tools/*.java helabasa/test/*.java helabasa/utils/*.java

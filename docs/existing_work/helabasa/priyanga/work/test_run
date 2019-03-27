@@ -1,0 +1,4 @@
+cd /home/priyanga/bin/classes
+java -cp ".:/home/priyanga/webapps/helabasa/WEB-INF/lib/*" $1 $2 $3 $4 
+
+cd ~/work

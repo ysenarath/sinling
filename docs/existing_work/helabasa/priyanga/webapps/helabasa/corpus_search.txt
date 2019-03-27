@@ -1,0 +1,38 @@
+<html><head><title>Helabasa - Menu</title></head>
+<style type="text/css">
+a {text-decoration:none;}
+a:hover {text-decoration:underline;}
+</style>
+<body aligh='center'><p align='center'>
+<h2 align='center'>Helabasa</h2> <h3 align='center'><a href='./index.html'>Sinhala Morphological Tools Collection</a></h3>
+<h3 align='center'>Sinhala Word Search () </h3>
+
+<br>
+<p align='center'>
+<table> 
+<tr>
+	<td> <input type='checkbox' id='rad1' name='search_crit' value='len'> </td> 
+	<td> Length </td>
+	<td> <input type='text' id='tlen' name='tlen'> </td>
+</tr>
+<tr>
+	<td> <input type='checkbox' id='rad2' name='search_crit' value='begin'> </td> 
+	<td> Begins With </td>
+	<td> <input type='text' id='tbegin' name='tbegin'> </td>
+</tr>
+<tr>
+	<td> <input type='checkbox' id='rad3' name='search_crit' value='end'> </td> 
+	<td> Ends With </td>
+	<td> <input type='text' id='tend' name='tend'> </td>
+</tr>
+<tr>
+	<td> <input type='checkbox' id='rad4' name='search_crit' value='cont'> </td> 
+	<td> Contains </td>
+	<td> <input type='text' id='tcont' name='tcont'> </td>
+</tr>
+</table>
+</p>
+
+
+<br><p align='center'>© 2013 Rajith Priyanga (<a href='mailto:rpriyanga@yahoo.com'> rpriyanga@yahoo.com</a>)</p></p>
+</body></html>
