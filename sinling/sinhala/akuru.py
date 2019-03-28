@@ -24,7 +24,9 @@ VOWEL_DIACRITICS = [
     'ං', 'ඃ'
 ]
 
-VOWEL_DIACRITICS_MAPPING = {v: d for v, d in zip(VOWELS, VOWEL_DIACRITICS)}
+DIACRITICS_MAPPING = {v: d for v, d in zip(VOWELS, VOWEL_DIACRITICS)}
+
+REVERSE_DIACRITICS_MAPPING = {d: v for v, d in zip(VOWELS, VOWEL_DIACRITICS)}
 
 CONJUNCT_CONSONANTS = [
     'ක්ර', 'ඛ්ර', 'ග්ර', 'ඝ්ර', 'ඞ්ර', 'ඟ්ර',

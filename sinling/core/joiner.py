@@ -11,5 +11,8 @@ class Joiner:
         for rule in self.rules:
             output_ = rule(l, r)
             if output_ is not None:
-                outputs.append(output_)
+                if isinstance(output_, (list, tuple)):
+                    outputs += output_
+                else:
+                    outputs += [output_]
         return outputs
