@@ -10,6 +10,8 @@ CONSONANTS = [
     'ශ', 'ෂ', 'ස', 'හ', 'ළ', 'ෆ',
 ]
 
+SAN_MAPPING = {'ඟ': 'oග', 'ඦ': '', 'ඬ': '', 'ඳ': '', 'ඹ': 'ම්බ'}
+
 BASE_CONSONANTS = [c + '්' for c in CONSONANTS]
 
 VOWELS = [

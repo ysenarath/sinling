@@ -75,7 +75,6 @@ def rule_2(l, r):
 def rule_4(l, r):
     """
     Rule for "Swạrādeshạ"
-    TODO: Check whether this rule is correct
     L[C1|​a] + [​i]R → L[C1|​e]R
     L[C1|​a] + [​u]R → L[C1|​o]R
     L[C1|​a] + [​u]R → L[C1|​ō]R
@@ -100,3 +99,70 @@ def rule_4(l, r):
     else:
         return None
     return [lef + akuru.DIACRITICS_MAPPING[c2] + rgt for c2 in c1]
+
+
+@word_joiner.rule
+def rule_5(l, r):
+    """
+    Rule for "Gatrādeshạ"
+    TODO: Check whether this rule is correct
+    L[C1|V1] + [C2|V2]R → L[C1|V1][C3|V2]R; Where C3 is a member of {​y, v, h, k, t, p, n, m}
+    :return:
+    """
+    lcom_suffix = utils.endswith(l, akuru.COMBINED_LETTERS)
+    l_suffix = utils.endswith(l, akuru.REVERSE_DIACRITICS_MAPPING)
+    v_suffix = akuru.REVERSE_DIACRITICS_MAPPING[l_suffix]
+    c_prefix = utils.startswith(r, akuru.CONSONANTS)
+    lft, rht = l, r
+    outputs = []
+    if v_suffix is not None and c_prefix == 'ක':
+        if v_suffix == 'ඉ':
+            rht = rht[len(c_prefix):]
+            c_prefix = 'ය'
+            outputs.append(lft + c_prefix + rht)
+        elif v_suffix == 'උ':
+            rht = rht[len(c_prefix):]
+            c_prefix = 'ව'
+            outputs.append(lft + c_prefix + rht)
+    if lcom_suffix is not None:
+        if lcom_suffix[0] == 'බ':
+            lft = lft[:-len(lcom_suffix)]
+            lcom_suffix = 'ප්'
+            outputs.append(lft + lcom_suffix + rht)
+        elif lcom_suffix[0] == 'ද':
+            lft = lft[:-len(lcom_suffix)]
+            lcom_suffix = 'ත්'
+            outputs.append(lft + lcom_suffix + rht)
+    return outputs
+
+
+@word_joiner.rule
+def rule_5(l, r):
+    """
+    Rule for "Pūrwạ Rūpạ"
+    L[C1] + [C2|V2]R → L[C1][C1|V2]R
+    :return:
+    """
+    lef, rgt = l, r
+    c_suffix = utils.endswith(l, akuru.COMBINED_LETTERS)
+    rgt = rgt[1:]
+    if c_suffix is not None:
+        return lef + c_suffix[0] + rgt
+    return None
+
+
+@word_joiner.rule
+def rule_5(l, r):
+    """
+    Rule for "Parạ Rūpạ"
+    L[C1] + [C2|V2]R → L[C2][C2|V2]R
+    :return:
+    """
+    lef, rgt = l, r
+    r_prefix = utils.startswith(r, akuru.COMBINED_LETTERS)
+    l_suffix = utils.endswith(l, akuru.COMBINED_LETTERS)
+    if r_prefix is not None and l_suffix is not None:
+        lef = lef[:-len(l_suffix)]
+        l_suffix = r_prefix[0] + l_suffix[1:]
+        return lef + l_suffix + rgt
+    return None
