@@ -201,12 +201,31 @@ def rule_9(l, r):
     :return:
     """
     lef, rgt = l, r
-    l_suffix = utils.endswith(lef, akuru.SAN_MAPPING)
+    l_suffix = utils.endswith(lef, akuru.BASE_CONSONANTS)
     if l_suffix is not None:
-        lef = lef[:-len(l_suffix)]
-        l_suffix_san = akuru.SAN_MAPPING[l_suffix]
-        lef += l_suffix_san[:-1]
-        # r_prefix = utils.endswith(lef, akuru.COMBINED_LETTERS)
-        # v2 = r_prefix[1:]
-        return lef + rgt
+        return [
+            lef[:-len(l_suffix)] + l_suffix[0] + akuru.DIACRITICS_MAPPING['උ'] + rgt,
+            lef[:-len(l_suffix)] + l_suffix[0] + akuru.DIACRITICS_MAPPING['ඉ'] + rgt,
+        ]
+    l_suffix = utils.endswith(lef, akuru.COMBINED_LETTERS)
+    r_prefix = utils.startswith(rgt, akuru.VOWELS)
+    if l_suffix is not None and r_prefix is not None:
+        return [lef + c3 + akuru.DIACRITICS_MAPPING[r_prefix] + rgt[len(r_prefix):] for c3 in ['ව', 'ය', 'ර']]
+    return None
+
+
+@word_joiner.rule
+def rule_10(l, r):
+    """
+    Rule for "Dwitwạ Rūpạ"
+
+    L[C1|V1] + [V2]R → L[C1][C1|V2]R
+    :return:
+    """
+    lef, rgt = l, r
+    l_suffix = utils.endswith(lef, akuru.COMBINED_LETTERS)
+    r_prefix = utils.startswith(rgt, akuru.VOWELS)
+    if l_suffix is not None and r_prefix is not None:
+        return lef[:-len(l_suffix)] + l_suffix[0] + '්' + l_suffix[0] + akuru.DIACRITICS_MAPPING[r_prefix] + rgt[
+                                                                                                       len(r_prefix):]
     return None

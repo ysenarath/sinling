@@ -1,6 +1,8 @@
 from sinling.sinhala import word_joiner
 
 # Following examples are from https://si.wikipedia.org/wiki/සිංහල_සන්ධි
+from sinling.sinhala.preprocess import preprocess
+
 examples = [
     ('ඔවුන්', 'ඔවුන්', 'ඔවුනොවුන්', 'ස්වර සන්ධිය'),
     ('උපන්', 'උපන්', 'උපනුපන්', 'ස්වර සන්ධිය'),
@@ -43,13 +45,15 @@ examples = [
 if __name__ == '__main__':
     # examples = [examples[2]]
     for w1, w2, r1, c in examples:
-        is_true = False
-        for r2 in word_joiner.join(w1, w2):
-            if r1 == r2:
-                is_true = True
-            # ff = '{:<35}' + '{:<10} ' * 5
-            # print(ff.format(c, w1, w2, r1, r2, r1 == r2))
-        if is_true:
-            print(r1, 'True')
-        else:
-            print(r1, 'False')
+        if c != '':
+            is_true = False
+            w1, w2 = preprocess(w1), preprocess(w2)
+            for r2 in word_joiner.join(w1, w2):
+                if r1 == r2:
+                    is_true = True
+                # ff = '{:<35}' + '{:<10} ' * 5
+                # print(ff.format(c, w1, w2, r1, r2, r1 == r2))
+            if is_true:
+                print(r1, 'True')
+            else:
+                print(r1, 'False')
