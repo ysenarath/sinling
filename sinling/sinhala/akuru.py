@@ -10,7 +10,12 @@ CONSONANTS = [
     'ශ', 'ෂ', 'ස', 'හ', 'ළ', 'ෆ',
 ]
 
-SAN_MAPPING = {'ඟ': 'oග', 'ඦ': '', 'ඬ': '', 'ඳ': '', 'ඹ': 'ම්බ'}
+# TODO: Check whether these are correct mappings
+# ඟ = ඬ්ග, ඦ = ඤ්ජ, ඬ = ණ්ඩ, ඳ = න්ද, ඹ = ම්බ
+# Resource: http://www.danuma.lk/sinhala/index.php?option=com_content&view=article&id=19234%3A2010-06-09-10-17-10&
+# catid=110%3Aeducation&Itemid=76&lang=si
+SAN_MAPPING = {'ඟ': 'oග', 'ඦ': 'ඤ්ජ', 'ඬ': 'ණ්ඩ', 'ඳ': 'න්ද', 'ඹ': 'ොම්බ'}
+REVERSE_SAN_MAPPING = {d: v for v, d in SAN_MAPPING.items()}
 
 BASE_CONSONANTS = [c + '්' for c in CONSONANTS]
 

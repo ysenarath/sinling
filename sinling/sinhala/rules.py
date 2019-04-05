@@ -137,7 +137,7 @@ def rule_5(l, r):
 
 
 @word_joiner.rule
-def rule_5(l, r):
+def rule_6(l, r):
     """
     Rule for "Pūrwạ Rūpạ"
     L[C1] + [C2|V2]R → L[C1][C1|V2]R
@@ -152,7 +152,7 @@ def rule_5(l, r):
 
 
 @word_joiner.rule
-def rule_5(l, r):
+def rule_7(l, r):
     """
     Rule for "Parạ Rūpạ"
     L[C1] + [C2|V2]R → L[C2][C2|V2]R
@@ -165,4 +165,48 @@ def rule_5(l, r):
         lef = lef[:-len(l_suffix)]
         l_suffix = r_prefix[0] + l_suffix[1:]
         return lef + l_suffix + rgt
+    return None
+
+
+@word_joiner.rule
+def rule_8(l, r):
+    """
+    Rule for "Gatrākshạrạ Lōpạ"
+    # todo: is this rule correct?
+    L[ n ] + [C2|V2]R → L[ ňg |V2]R
+    L[ n ] + [C2|V2]R → L[ ňb |V2]R
+    :return:
+    """
+    lef, rgt = l, r
+    l_suffix = utils.endswith(lef, akuru.SAN_MAPPING)
+    if l_suffix is not None:
+        lef = lef[:-len(l_suffix)]
+        l_suffix_san = akuru.SAN_MAPPING[l_suffix]
+        lef += l_suffix_san[:-1]
+        # r_prefix = utils.endswith(lef, akuru.COMBINED_LETTERS)
+        # v2 = r_prefix[1:]
+        return lef + rgt
+    return None
+
+
+@word_joiner.rule
+def rule_9(l, r):
+    """
+    Rule for "Āgạmạ"
+
+    L[C1] + R → L[C1|u]R
+    L[C1] + R → L[C1|i]R
+    L[C1|V1] + [V2]R → L[C1|V1][C3|V2]R
+    Where C3 = { y, v, r }
+    :return:
+    """
+    lef, rgt = l, r
+    l_suffix = utils.endswith(lef, akuru.SAN_MAPPING)
+    if l_suffix is not None:
+        lef = lef[:-len(l_suffix)]
+        l_suffix_san = akuru.SAN_MAPPING[l_suffix]
+        lef += l_suffix_san[:-1]
+        # r_prefix = utils.endswith(lef, akuru.COMBINED_LETTERS)
+        # v2 = r_prefix[1:]
+        return lef + rgt
     return None
