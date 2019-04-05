@@ -1,8 +1,12 @@
 from sinling import utils
-from sinling.core import Joiner
+from sinling.core import RuleBasedJoiner
 from sinling.sinhala import akuru
 
-word_joiner = Joiner()
+__all__ = [
+    'word_joiner'
+]
+
+word_joiner = RuleBasedJoiner()
 
 
 @word_joiner.rule
@@ -227,5 +231,6 @@ def rule_10(l, r):
     r_prefix = utils.startswith(rgt, akuru.VOWELS)
     if l_suffix is not None and r_prefix is not None:
         return lef[:-len(l_suffix)] + l_suffix[0] + '්' + l_suffix[0] + akuru.DIACRITICS_MAPPING[r_prefix] + rgt[
-                                                                                                       len(r_prefix):]
+                                                                                                             len(
+                                                                                                                 r_prefix):]
     return None

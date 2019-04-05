@@ -1,4 +1,4 @@
-from sinling.sinhala import word_joiner
+from sinling.sinhala.joiner import word_joiner
 
 # Following examples are from https://si.wikipedia.org/wiki/සිංහල_සන්ධි
 from sinling.sinhala.preprocess import preprocess

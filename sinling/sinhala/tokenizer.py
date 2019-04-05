@@ -2,6 +2,10 @@ import jnius_config
 
 from sinling.config import BIN_PATH
 
+__all__ = [
+    'SinhalaTokenizer'
+]
+
 
 def import_class(class_):
     jnius_config.set_classpath(BIN_PATH)

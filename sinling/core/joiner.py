@@ -1,4 +1,15 @@
+__all__ = [
+    'Joiner',
+    'RuleBasedJoiner',
+]
+
+
 class Joiner:
+    def join(self, l, r):
+        raise NotImplementedError
+
+
+class RuleBasedJoiner(Joiner):
     def __init__(self):
         self.rules = []
 

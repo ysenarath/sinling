@@ -1,3 +1,8 @@
+__all__ = [
+    'preprocess'
+]
+
+
 def fix_characters(text):
     text = text.replace('අා', 'ආ')
     text = text.replace('අැ', 'ඇ')
