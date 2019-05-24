@@ -12,7 +12,7 @@ def fix_characters(text):
 
 
 def preprocess(text, **options):
-    x = text
+    x = text.strip()
     if 'fix_characters' not in options or ('fix_characters' in options and options['fix_characters']):
         x = fix_characters(x)
     return x
