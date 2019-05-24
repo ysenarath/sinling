@@ -1,4 +1,7 @@
 # Following examples are from https://si.wikipedia.org/wiki/සිංහල_සන්ධි
+
+import nltk
+
 from sinling import preprocess, word_joiner
 
 examples = [
@@ -40,22 +43,58 @@ examples = [
     ('දැන්', 'දු', 'දැනුදු', 'ආගම සන්ධිය'),
 ]
 
+examples2 = [
+    ('කොක්', 'ආ', 'කොකා', '?'),
+    ('හරක්', 'එක්', 'හරකෙක්', '?'),
+    ('තරු', 'අ', 'තරුව', '?'),
+    ('ගිරා', 'එක්', 'ගිරවෙක්', '?'),
+    ('ගිරා', 'ආ', 'ගිරවා', '?'),
+    ('කොර', 'ආ', 'කොරා', '?'),
+    ('පාලම්', 'අ', 'පාලම', '?'),
+    ('හිත්', 'අ', 'හිත', '?'),
+    ('මල්', 'අ', 'මල', '?'),
+    ('මලු', 'අ', 'මල්ල', '?'),
+    ('මල්', 'අක්', 'මලක්', '?'),
+    ('මලු', 'අක්', 'මල්ලක්', '?'),
+    ('ගිරා', 'උ', 'ගිරවු', '?'),
+    ('තරු', 'අක්', 'තරුවක්', '?'),
+    ('තරු', 'අක', 'තරුවක', '?'),
+    ('හිත්', 'ඒ', 'හිතේ', '?'),
+    ('ජාතික', 'යා', 'ජාතිකයා', '?'),
+    ('කඳවුරු', 'අ', 'කඳවුර', '?'),
+    ('වරාය', 'අක්', 'වරායක්', '?'),
+    ('යානා', 'අ', 'යානාව', '?'),
+    ('මිනිස්', 'ආ', 'මිනිසා', '?'),
+    ('ඇත්', 'එක්', 'ඇතෙක්', '?'),
+]
+
+
+def reader(file):
+    with open(file, 'r', encoding='utf-8') as f1:
+        for item in f1.read().split('\n'):
+            yield item.split(' ')
+
+
 if __name__ == '__main__':
     true_positive = 0
     false_positive = 0
-    true_negative = 0
-    false_negative = 0
-    for w1, w2, r1, c in examples:
+    words = [w for r in reader('../data/tokenized.txt') for w in r]
+    dist = nltk.FreqDist(words)
+    for w1, w2, r1, c in examples2:
         if c != '':
             w1, w2 = preprocess(w1), preprocess(w2)
+            max_count = -1
+            word = '?'
             for r2 in word_joiner.join(w1, w2):
-                if r1 == r2:
-                    true_positive += 1
-                else:
-                    false_positive += 1
+                count = dist[r2]
+                if count > max_count:
+                    word = r2
+                    max_count = count
+            if r1 == word:
+                print(w1, w2, r1, word, 1)
+                true_positive += 1
+            else:
+                print(w1, w2, r1, word, 0)
+                false_positive += 1
     print('True Positives {}'.format(true_positive))
     print('False Positives {}'.format(false_positive))
-    print('Accuracy {}'.format(
-        sum([true_positive, true_negative]) / sum([true_positive, true_negative, false_positive, false_negative])))
-    print('Precision {}'.format(true_positive / sum([true_positive, false_positive])))
-    print('Recall {}'.format(true_positive / sum([true_positive, false_negative])))
