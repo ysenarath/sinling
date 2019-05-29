@@ -26,6 +26,7 @@ Sinhala tokenizer also includes `tokenizer.contains_sinhala(...)` and
 ### Word Joiner (Morphological Joiner)
 ```python
 from sinling import preprocess, word_joiner
+
 w1 = preprocess('මුනි')
 w2 = preprocess('උතුමා')
 results = word_joiner.join(w1, w2)
