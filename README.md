@@ -49,3 +49,9 @@ project
     │   +-- helabasa
         │   +-- ...
 ```
+
+## Contributions
+- Contact `wayasas.13@cse.mrt.ac.lk` if you would like to contribute to this project.
+
+## Special Notice
+This project is still in work in progress status. Use at Your Own Risk.
