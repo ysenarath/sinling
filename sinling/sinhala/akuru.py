@@ -1,6 +1,6 @@
 from sinling import utils
 
-CONSONANTS = [
+BASE_CONSONANTS = [
     'ක', 'ඛ', 'ග', 'ඝ', 'ඞ', 'ඟ',
     'ච', 'ඡ', 'ජ', 'ඣ', 'ඤ', 'ඦ',
     'ට', 'ඨ', 'ඩ', 'ඪ', 'ණ', 'ඬ',
@@ -17,7 +17,7 @@ CONSONANTS = [
 SAN_MAPPING = {'ඟ': 'oග', 'ඦ': 'ඤ්ජ', 'ඬ': 'ණ්ඩ', 'ඳ': 'න්ද', 'ඹ': 'ොම්බ'}
 REVERSE_SAN_MAPPING = {d: v for v, d in SAN_MAPPING.items()}
 
-BASE_CONSONANTS = [c + '්' for c in CONSONANTS]
+CONSONANTS = [c + '්' for c in BASE_CONSONANTS]
 
 VOWELS = [
     'අ', 'ආ', 'ඇ', 'ඈ', 'ඉ', 'ඊ', 'උ', 'ඌ',
@@ -46,4 +46,4 @@ NUMERALS = [
     '𑇫', '𑇬', '𑇭', '𑇮', '𑇯', '𑇰', '𑇱', '𑇲', '𑇳', '𑇴',
 ]
 
-COMBINED_LETTERS = BASE_CONSONANTS + utils.combine(CONSONANTS, VOWEL_DIACRITICS)
+COMBINED_LETTERS = CONSONANTS + utils.combine(BASE_CONSONANTS, VOWEL_DIACRITICS)

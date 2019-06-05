@@ -16,7 +16,7 @@ def rule_0(l, r):
     L[C1] + [V1]R → L[C1|V1]R
     :return:
     """
-    c_suffix = utils.endswith(l, akuru.BASE_CONSONANTS)
+    c_suffix = utils.endswith(l, akuru.CONSONANTS)
     if c_suffix is not None:
         c1 = c_suffix[0]
         lef = l[:-len(c_suffix)]
@@ -116,7 +116,7 @@ def rule_5(l, r):
     lcom_suffix = utils.endswith(l, akuru.COMBINED_LETTERS)
     l_suffix = utils.endswith(l, akuru.REVERSE_DIACRITICS_MAPPING)
     v_suffix = akuru.REVERSE_DIACRITICS_MAPPING[l_suffix]
-    c_prefix = utils.startswith(r, akuru.CONSONANTS)
+    c_prefix = utils.startswith(r, akuru.BASE_CONSONANTS)
     lft, rht = l, r
     outputs = []
     if v_suffix is not None and c_prefix == 'ක':
@@ -205,7 +205,7 @@ def rule_9(l, r):
     :return:
     """
     lef, rgt = l, r
-    l_suffix = utils.endswith(lef, akuru.BASE_CONSONANTS)
+    l_suffix = utils.endswith(lef, akuru.CONSONANTS)
     if l_suffix is not None:
         return [
             lef[:-len(l_suffix)] + l_suffix[0] + akuru.DIACRITICS_MAPPING['උ'] + rgt,
