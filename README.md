@@ -1,5 +1,5 @@
-# SinLing
-SinLing is to be the state of the art tool for Sinhalese Language Processing tasks. 
+# SinLing 
+SinLing is to be the state of the art tool for Sinhalese (සිංහල) Language Processing tasks. 
 
 ## How to get started
 Steps-
