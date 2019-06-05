@@ -36,3 +36,7 @@ def combine(cs, vs):
     :return: list of combined strings
     """
     return [ci + vi for ci in cs for vi in vs]
+
+
+def harmonic_mean(*a):
+    return len(a) / sum([1 / k for k in a])
