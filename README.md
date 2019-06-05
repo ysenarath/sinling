@@ -33,6 +33,15 @@ results = word_joiner.join(w1, w2)
 # Returns a list of possible results after applying join rules ['මුනිතුමා', ...]
 ```
 
+### Word Splitter (Morphological Splitter) / corpus based - *experimental*
+```python
+from sinling import word_splitter
+
+word = '...'
+results = word_splitter.split(word)
+# Returns a dict containing debug information, base word and affix
+```
+
 ## Project Structure
 ```
 project

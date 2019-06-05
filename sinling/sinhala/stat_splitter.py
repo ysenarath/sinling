@@ -53,7 +53,7 @@ class CorpusBasedSplitter(Splitter):
         return {
             'debug': debug,
             'base': best_split[0],
-            'morph': best_split[1],
+            'affix': best_split[1],
         }
 
 
