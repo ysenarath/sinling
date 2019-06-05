@@ -35,7 +35,7 @@ class CorpusBasedSplitter(Splitter):
         for i in range(1, len(text)):
             s1 = text[:i]
             s2 = text[i:]
-            word_freq_s1 = text[s1]
+            word_freq_s1 = self.data['dist'][s1]
             # Check base word (with ්) if s2 != ්
             if not s2.startswith('්'):
                 s3 = text[:i] + '්'
