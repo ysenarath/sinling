@@ -27,7 +27,7 @@ class CorpusBasedSplitter(Splitter):
         Splits the input text two two while trying to maximize the availability of parts in a defined corpus.
 
         :param text: input word
-        :return: a dictionary containing `debug`, `base`, and `morph`.
+        :return: a dictionary containing `debug`, `base`, and `affix`.
         """
         debug = []
         max_score = 0
