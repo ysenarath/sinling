@@ -1,10 +1,11 @@
 # SinLing 
 SinLing is to be the tool for Sinhalese (සිංහල) Language Processing tasks. 
 
+`Update 2019.07.21: This tool no longer requires java to run sinhala tokenizer. 
+All java code is ported to Python implementation for convenience.`
+
 ## How to get started
 Steps-
-1. Change dir path of your shell to project folder
-1. Execute `javac bin/SinhalaTokenizer.java -encoding "UTF-8"` (you need to have Java JDK - tested with javac version 1.8.0_201)
 1. Download [`stat.split.pickle`](https://github.com/ysenarath/sinling/releases/download/v0.1-alpha/stat.split.pickle) to the `bin` folder
 1. Import required tools from the `sinling` module in your desired project 
 (you may have to append this project path to your path environment variable)
