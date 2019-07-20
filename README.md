@@ -1,5 +1,5 @@
 # SinLing 
-SinLing is to be the state of the art tool for Sinhalese (සිංහල) Language Processing tasks. 
+SinLing is to be the tool for Sinhalese (සිංහල) Language Processing tasks. 
 
 ## How to get started
 Steps-
@@ -42,6 +42,8 @@ word = '...'
 results = word_splitter.split(word)
 # Returns a dict containing debug information, base word and affix
 ```
+
+Go [here](https://www.ysenarath.com/sinling/docs/splitter.slides) to see some sample splits.
 
 ## Project Structure
 ```
