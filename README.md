@@ -22,8 +22,7 @@ sentence = '...'  # your sentence
 tokenizer.tokenize(sentence)
 ```
 
-Sinhala tokenizer also includes `tokenizer.contains_sinhala(...)` and 
-`tokenizer.split_sentences(...)` functions.
+Sinhala tokenizer also includes `tokenizer.split_sentences(...)` function for splitting sentences.
 
 ### Word Joiner (Morphological Joiner)
 ```python
