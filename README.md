@@ -6,6 +6,7 @@ All java code is ported to Python implementation for convenience.`
 
 ## How to get started
 Steps-
+1. Create new folder named `bin` in root path
 1. Download [`stat.split.pickle`](https://github.com/ysenarath/sinling/releases/download/v0.1-alpha/stat.split.pickle) to the `bin` folder
 1. Import required tools from the `sinling` module in your desired project 
 (you may have to append this project path to your path environment variable)
