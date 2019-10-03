@@ -44,7 +44,7 @@ results = word_splitter.split(word)
 # Returns a dict containing debug information, base word and affix
 ```
 
-Visit [here](https://www.ysenarath.com/sinling/docs/splitter.slides) to see some sample splits.
+Visit [~~here~~](https://github.com/ysenarath/sinling/blob/master/docs/splitter.slides.html) to see some sample splits.
 
 ## Project Structure
 ```
