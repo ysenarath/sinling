@@ -1,5 +1,5 @@
 # SinLing 
-SinLing is to be the tool for Sinhalese (සිංහල) Language Processing tasks. 
+A language processing tool for Sinhalese (සිංහල). 
 
 `Update 2019.07.21: This tool no longer requires java to run sinhala tokenizer. 
 All java code is ported to Python implementation for convenience.`
