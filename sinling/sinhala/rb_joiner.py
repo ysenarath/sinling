@@ -183,10 +183,11 @@ def rule_8(l, r):
     :return:
     """
     lef, rgt = l, r
-    l_suffix = utils.endswith(lef, letters.SAN_MAPPING)
+    l_suffix = utils.endswith(lef, letters.COMBINED_SAN)
     if l_suffix is not None:
+        c1 = l_suffix[0]
         lef = lef[:-len(l_suffix)]
-        l_suffix_san = letters.SAN_MAPPING[l_suffix]
+        l_suffix_san = letters.SAN_MAPPING[c1]
         lef += l_suffix_san[:-1]
         # r_prefix = utils.endswith(lef, letters.COMBINED_LETTERS)
         # v2 = r_prefix[1:]
