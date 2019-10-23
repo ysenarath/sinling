@@ -82,22 +82,27 @@ def rule_4(l, r):
     L[C1|​a] + [​i]R → L[C1|​e]R
     L[C1|​a] + [​u]R → L[C1|​o]R
     L[C1|​a] + [​u]R → L[C1|​ō]R
+    L[C1|​e] + [​a]R → L[C1|​ā]R
     :return:
     """
-    lef = l
     c_suffix = utils.endswith(l, letters.REVERSE_DIACRITICS_MAPPING)
-    if c_suffix is not None and letters.REVERSE_DIACRITICS_MAPPING[c_suffix] == 'අ':
-        pass
-    else:
-        return None
     v_prefix = utils.startswith(r, letters.VOWELS)
-    if v_prefix is not None:
-        if v_prefix == 'ඉ':
-            c1 = 'එ',
-            rgt = r[len(v_prefix):]
-        elif v_prefix == 'උ':
-            c1 = 'ඔ', 'ඕ'
-            rgt = r[len(v_prefix):]
+    if c_suffix is not None and v_prefix is not None:
+        rgt = r[len(v_prefix):]
+        if letters.REVERSE_DIACRITICS_MAPPING[c_suffix] == 'අ':
+            lef = l
+            if v_prefix == 'ඉ':
+                c1 = 'එ',
+            elif v_prefix == 'උ':
+                c1 = 'ඔ', 'ඕ'
+            else:
+                return None
+        elif letters.REVERSE_DIACRITICS_MAPPING[c_suffix] == 'එ':
+            lef = l[:-len(c_suffix)]
+            if v_prefix == 'අ':
+                c1 = 'ඈ',
+            else:
+                return None
         else:
             return None
     else:
