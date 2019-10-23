@@ -114,7 +114,6 @@ def rule_4(l, r):
 def rule_5(l, r):
     """
     Rule for "Gatrādeshạ"
-    TODO: Check whether this rule is correct
     L[C1|V1] + [C2|V2]R → L[C1|V1][C3|V2]R; Where C3 is a member of {​y, v, h, k, t, p, n, m}
     :return:
     """
@@ -125,14 +124,11 @@ def rule_5(l, r):
     lft, rht = l, r
     outputs = []
     if v_suffix is not None and c_prefix == 'ක':
-        if v_suffix == 'ඉ':
-            rht = rht[len(c_prefix):]
-            c_prefix = 'ය'
-            outputs.append(lft + c_prefix + rht)
-        elif v_suffix == 'උ':
-            rht = rht[len(c_prefix):]
-            c_prefix = 'ව'
-            outputs.append(lft + c_prefix + rht)
+        rht = rht[len(c_prefix):]
+        c_prefix = 'ය'
+        outputs.append(lft + c_prefix + rht)
+        c_prefix = 'ව'
+        outputs.append(lft + c_prefix + rht)
     if lcom_suffix is not None:
         if lcom_suffix[0] == 'බ':
             lft = lft[:-len(lcom_suffix)]
