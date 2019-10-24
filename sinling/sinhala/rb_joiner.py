@@ -237,6 +237,7 @@ def rule_10(l, r):
     Rule for "Dwitwạ Rūpạ"
 
     L[C1|V1] + [V2]R → L[C1][C1|V2]R
+    L[C1|V1] + [C1|V2]R → L[C1|v1][C1][C1|V2]R
     :return:
     """
     lef, rgt = l, r
@@ -246,4 +247,7 @@ def rule_10(l, r):
         return lef[:-len(l_suffix)] + l_suffix[0] + '්' + l_suffix[0] + letters.DIACRITICS_MAPPING[r_prefix] + rgt[
                                                                                                              len(
                                                                                                                  r_prefix):]
+    r_prefix = utils.startswith(rgt, letters.COMBINED_LETTERS)
+    if l_suffix is not None and r_prefix is not None:
+        return lef + r_prefix[0] + '්' + rgt
     return None
