@@ -216,7 +216,18 @@ def rule_9(l, r):
     l_suffix = utils.endswith(lef, letters.COMBINED_LETTERS)
     r_prefix = utils.startswith(rgt, letters.VOWELS)
     if l_suffix is not None and r_prefix is not None:
-        return [lef + c3 + letters.DIACRITICS_MAPPING[r_prefix] + rgt[len(r_prefix):] for c3 in ['ව', 'ය', 'ර']]
+        outputs = [lef + c3 + letters.DIACRITICS_MAPPING[r_prefix] + rgt[len(r_prefix):] for c3 in ['ව', 'ය', 'ර']]
+        if len(l_suffix) > 1 and l_suffix[1] in letters.LONG_TO_SHORT_VOWEL_DIACRITICS_MAPPING:
+            outputs.extend(
+                [
+                    lef[:-1] +
+                    letters.LONG_TO_SHORT_VOWEL_DIACRITICS_MAPPING[l_suffix[1]] +
+                    c3 +
+                    letters.DIACRITICS_MAPPING[r_prefix] +
+                    rgt[len(r_prefix):] for c3 in ['ව', 'ය', 'ර']
+                ]
+            )
+        return outputs
     return None
 
 

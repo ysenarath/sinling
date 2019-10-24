@@ -34,6 +34,15 @@ VOWEL_DIACRITICS = [
     'ං', 'ඃ'
 ]
 
+LONG_TO_SHORT_VOWEL_DIACRITICS_MAPPING = {
+    '': 'ා',
+    'ෑ': 'ැ',
+    'ී': 'ි',
+    'ූ': 'ු',
+    'ේ': 'ෙ',
+    'ෝ': 'ො'
+}
+
 DIACRITICS_MAPPING = {v: d for v, d in zip(VOWELS, VOWEL_DIACRITICS)}
 
 REVERSE_DIACRITICS_MAPPING = {d: v for v, d in zip(VOWELS, VOWEL_DIACRITICS)}
