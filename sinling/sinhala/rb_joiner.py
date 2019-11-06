@@ -251,3 +251,126 @@ def rule_10(l, r):
     if l_suffix is not None and r_prefix is not None:
         return lef + r_prefix[0] + '්' + rgt
     return None
+
+
+@word_joiner.rule
+def rule_11(l, r):
+    """
+    Rule for "svara sandhi - svarṇa svara dīrghaya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, ['', 'ා'])
+    r_prefix = utils.startswith(r, ['අ', 'ආ'])
+    if l_suffix is not None and r_prefix is not None:
+        if l_suffix == '':
+            return l + 'ා' + r[len(r_prefix):]
+        return l + r[len(r_prefix):]
+
+    l_suffix = utils.endswith(l, ['ි', 'ී'])
+    r_prefix = utils.startswith(r, ['ඉ', 'ඊ'])
+    if l_suffix is not None and r_prefix is not None:
+        return l[:-len(l_suffix)] + 'ී' + r[len(r_prefix):]
+
+    l_suffix = utils.endswith(l, ['ු', 'ූ'])
+    r_prefix = utils.startswith(r, ['උ', 'ඌ'])
+    if l_suffix is not None and r_prefix is not None:
+        return l[:-len(l_suffix)] + 'ූ' + r[len(r_prefix):]
+
+
+@word_joiner.rule
+def rule_12(l, r):
+    """
+    Rule for "svara sandhi - guṇa sandhiya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, ['', 'ා'])
+    r_prefix = utils.startswith(r, ['ඉ', 'ඊ'])
+    if l_suffix is not None:
+        if r_prefix is not None:
+            if l_suffix == '':
+                return [l + v3 + r[len(r_prefix):] for v3 in ['ෙ', 'ේ']]
+            return [l[:-len(l_suffix)] + v3 + r[len(r_prefix):] for v3 in ['ෙ', 'ේ']]
+
+        # l_suffix = utils.endswith(l, ['', 'ා'])
+        r_prefix = utils.startswith(r, ['උ', 'ඌ'])
+        if r_prefix is not None:
+            if l_suffix == '':
+                return [l + v3 + r[len(r_prefix):] for v3 in ['ො', 'ෝ']]
+            return [l[:-len(l_suffix)] + v3 + r[len(r_prefix):] for v3 in ['ො', 'ෝ']]
+
+        # l_suffix = utils.endswith(l, ['', 'ා'])
+        r_prefix = utils.startswith(r, ['ඍ'])
+        if r_prefix is not None:
+            if l_suffix == '':
+                return l + 'ර්' + r[len(r_prefix):]
+            return l[:-len(l_suffix)] + 'ර්' + r[len(r_prefix):]
+
+
+@word_joiner.rule
+def rule_13(l, r):
+    """
+    Rule for "svara sandhi - vṛddhi sandhiya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, ['', 'ා'])
+    if l_suffix is not None:
+        r_prefix = utils.startswith(r, ['එ'])
+        if r_prefix is not None:
+            if l_suffix == '':
+                return l + 'ෛ' + r[len(r_prefix):]
+            return l[:-len(l_suffix)] + 'ෛ' + r[len(r_prefix):]
+
+        r_prefix = utils.startswith(r, ['ඔ'])
+        if r_prefix is not None:
+            if l_suffix == '':
+                return l + 'ෞ' + r[len(r_prefix):]
+            return l[:-len(l_suffix)] + 'ෞ' + r[len(r_prefix):]
+
+
+@word_joiner.rule
+def rule_14(l, r):
+    """
+    Rule for "svara sandhi - vṛddhi samāhāra sandhiya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, ['', 'ා'])
+    if l_suffix is not None:
+        r_prefix = utils.startswith(r, ['ඓ'])
+        if r_prefix is not None:
+            if l_suffix == '':
+                return l + 'ෛ' + r[len(r_prefix):]
+            return l[:-len(l_suffix)] + 'ෛ' + r[len(r_prefix):]
+
+        r_prefix = utils.startswith(r, ['ඖ'])
+        if r_prefix is not None:
+            if l_suffix == '':
+                return l + 'ෞ' + r[len(r_prefix):]
+            return l[:-len(l_suffix)] + 'ෞ' + r[len(r_prefix):]
+
+
+@word_joiner.rule
+def rule_15(l, r):
+    """
+    Rule for "svara sandhi - ardha svara bhāva sandhiya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, ['ි', 'ී'])
+    r_prefix = utils.startswith(r, ['අ', 'ආ', 'ඇ', 'ඈ', 'උ', 'ඌ', 'ඍ', 'ඎ', 'එ', 'ඒ', 'ඓ', 'ඔ', 'ඕ', 'ඖ'])
+    if l_suffix is not None and r_prefix is not None:
+        return l[:-len(l_suffix)] + '්‍ය' + letters.DIACRITICS_MAPPING[r_prefix] + r[len(r_prefix):]
+
+    l_suffix = utils.endswith(l, ['ු', 'ූ'])
+    r_prefix = utils.startswith(r, ['අ', 'ආ', 'ඇ', 'ඈ', 'ඉ', 'ඊ', 'ඍ', 'ඎ', 'එ', 'ඒ', 'ඓ', 'ඔ', 'ඕ', 'ඖ'])
+    if l_suffix is not None and r_prefix is not None:
+        return l[:-len(l_suffix)] + '්ව' + letters.DIACRITICS_MAPPING[r_prefix] + r[len(r_prefix):]
+
+    l_suffix = utils.endswith(l, ['ෘ'])
+    r_prefix = utils.startswith(r, ['අ', 'ආ', 'ඇ', 'ඈ', 'ඉ', 'ඊ', 'උ', 'ඌ', 'එ', 'ඒ', 'ඓ', 'ඔ', 'ඕ', 'ඖ'])
+    if l_suffix is not None and r_prefix is not None:
+        return l[:-len(l_suffix)] + '්‍ර' + letters.DIACRITICS_MAPPING[r_prefix] + r[len(r_prefix):]
+
