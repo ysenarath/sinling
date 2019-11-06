@@ -374,3 +374,73 @@ def rule_15(l, r):
     if l_suffix is not None and r_prefix is not None:
         return l[:-len(l_suffix)] + '්‍ර' + letters.DIACRITICS_MAPPING[r_prefix] + r[len(r_prefix):]
 
+
+@word_joiner.rule
+def rule_16(l, r):
+    """
+    Rule for "vyaṁjana sandhi - ghośī karaṇaya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, letters.AGOSHA_LETTERS)
+    r_prefix = utils.startswith(r, letters.GOSHA_LETTERS)
+    if l_suffix is not None and r_prefix is not None:
+        if r_prefix in letters.VOWELS:
+            return l[:-len(l_suffix)] + letters.AGOSHA_TO_GOSHA_MAPPING[l_suffix][0] + \
+                   letters.DIACRITICS_MAPPING[r_prefix] + r[len(r_prefix):]
+        return l[:-len(l_suffix)] + letters.AGOSHA_TO_GOSHA_MAPPING[l_suffix] + r
+
+
+@word_joiner.rule
+def rule_17(l, r):
+    """
+    Rule for "vyaṁjana sandhi - talujikaraṇaya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, ['ත්'])
+    r_prefix = utils.startswith(r, ['ච', 'ඡ', 'ජ', 'ඣ', 'ශ'])
+    if l_suffix is not None and r_prefix is not None:
+        if r_prefix == 'ශ':
+            return l[:-len(l_suffix)] + 'ච්ඡ' + r[len(r_prefix):]
+        return l[:-len(l_suffix)] + 'ච්' + r
+
+
+@word_joiner.rule
+def rule_18(l, r):
+    """
+    Rule for "vyaṁjana sandhi - pārśvīkaraṇaya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, ['ත්'])
+    r_prefix = utils.startswith(r, ['ල'])
+    if l_suffix is not None and r_prefix is not None:
+        return l[:-len(l_suffix)] + 'ල්' + r
+
+
+@word_joiner.rule
+def rule_18(l, r):
+    """
+    Rule for "vyaṁjana sandhi - nāsikyakaraṇaya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, letters.AGOSHA_LETTERS)
+    r_prefix = utils.startswith(r, ['ඞ', 'ඤ', 'ණ', 'න', 'ම'])
+    if l_suffix is not None and r_prefix is not None:
+        return l[:-len(l_suffix)] + letters.AGOSHA_TO_GOSHA_MAPPING[l_suffix] + r
+
+
+@word_joiner.rule
+def rule_18(l, r):
+    """
+    Rule for "vyaṁjana sandhi - dvitva rūpaya"
+
+    :return:
+    """
+    l_suffix = utils.endswith(l, letters.VOWEL_DIACRITICS)
+    r_prefix = utils.startswith(r, ['ඡ'])
+    if l_suffix is not None and r_prefix is not None:
+        return l + 'ච්' + r
+
