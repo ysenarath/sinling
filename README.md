@@ -4,7 +4,7 @@ A language processing tool for Sinhalese (සිංහල).
 `Update 2019.07.21: This tool no longer requires java to run sinhala tokenizer. 
 All java code is ported to Python implementation for convenience.`
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ysenarath/sinling.git/master)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ysenarath/sinling/37fbcbaef51f0ff87ea9dcca4617ff427f7d34ce)
 
 
 ## How to get started
