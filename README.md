@@ -69,5 +69,7 @@ project
 ## Contributions
 - Contact `wayasas.13@cse.mrt.ac.lk` if you would like to contribute to this project.
 
-## Special Notice
-This project is still in work in progress status. Use at Your Own Risk.
+## License
+Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
