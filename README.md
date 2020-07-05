@@ -49,23 +49,6 @@ results = word_splitter.split(word)
 
 Visit [here](https://github.com/ysenarath/sinling/blob/master/scripts/splitter.ipynb) to see some sample splits.
 
-## Project Structure
-```
-project
-.
-+-- README.md 
-+-- sinling
-│   +-- ...
-+--scripts
-│   +-- rules_exmple.py
-│   +-- evaluate.py
-+--docs
-    +-- existing_work
-    │   +-- sinhala_alphabet.xls
-    │   +-- helabasa
-        │   +-- ...
-```
-
 ## Contributions
 - Contact `wayasas.13@cse.mrt.ac.lk` if you would like to contribute to this project.
 
