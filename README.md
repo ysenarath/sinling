@@ -26,6 +26,18 @@ sentence = '...'  # your sentence
 tokenizer.tokenize(sentence)
 ```
 
+### Sinhala Stemmer (Experimental)
+```python
+from sinling import SinhalaStemmer
+
+stemmer = SinhalaStemmer()
+
+word = '...'  # your sentence
+
+stemmer.stem(word)
+```
+
+
 Sinhala tokenizer also includes `tokenizer.split_sentences(...)` function for splitting sentences.
 
 ### Word Joiner (Morphological Joiner)

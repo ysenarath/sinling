@@ -3,6 +3,8 @@ from typing import Tuple, Text, Dict, List
 
 import emoji
 
+from sinling.core import Tokenizer
+
 Boolean = bool
 
 __all__ = [
@@ -27,12 +29,6 @@ def contains_sinhala(s: Text) -> Boolean:
         if is_a_sinhala_letter(c):
             return True
     return False
-
-
-# noinspection SpellCheckingInspection
-class Tokenizer:
-    def tokenize(self, sentence: Text) -> List[Text]:
-        raise NotImplementedError()
 
 
 # noinspection SpellCheckingInspection

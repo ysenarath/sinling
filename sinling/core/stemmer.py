@@ -1,11 +1,11 @@
 __all__ = [
-    'Splitter'
+    'Stemmer'
 ]
 
 
-class Splitter:
+class Stemmer:
     def __init__(self):
         pass
 
-    def split(self, text):
+    def stem(self, text):
         raise NotImplementedError
