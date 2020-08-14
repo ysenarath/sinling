@@ -37,8 +37,7 @@ word = '...'  # your sentence
 stemmer.stem(word)
 ```
 
-
-Sinhala tokenizer also includes `tokenizer.split_sentences(...)` function for splitting sentences.
+Please cite [sinhala-stemmer](https://github.com/rksk/sinhala-news-analysis/tree/master/sinhala-stemmer) if you are using this implementation.
 
 ### Word Joiner (Morphological Joiner)
 ```python
