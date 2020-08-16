@@ -2,6 +2,8 @@ class POSTagger(object):
     pass# SinLing 
 A language processing tool for Sinhalese (සිංහල). 
 
+`Update 2020.08.16: Integrated Part of speech tagger and stemmer tool.`
+
 `Update 2019.07.21: This tool no longer requires java to run sinhala tokenizer. 
 All java code is ported to Python implementation for convenience.`
 
