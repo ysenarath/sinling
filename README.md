@@ -1,4 +1,5 @@
-# SinLing 
+class POSTagger(object):
+    pass# SinLing 
 A language processing tool for Sinhalese (සිංහල). 
 
 `Update 2019.07.21: This tool no longer requires java to run sinhala tokenizer. 
@@ -9,8 +10,7 @@ All java code is ported to Python implementation for convenience.`
 
 ## How to get started
 Steps-
-1. Create new folder named `bin` in root path
-1. Download [`stat.split.pickle`](https://github.com/ysenarath/sinling/releases/download/v0.1-alpha/stat.split.pickle) to the `bin` folder
+1. Download [`stat.split.pickle`](https://github.com/ysenarath/sinling/releases/download/v0.1-alpha/stat.split.pickle) to the `resources` folder
 1. Import required tools from the `sinling` module in your desired project 
 (you may have to append this project path to your path environment variable)
 
@@ -38,6 +38,22 @@ stemmer.stem(word)
 ```
 
 Please cite [sinhala-stemmer](https://github.com/rksk/sinhala-news-analysis/tree/master/sinhala-stemmer) if you are using this implementation.
+
+### Part-of-Speech Tagger
+
+```python
+from sinling import SinhalaTokenizer, POSTagger
+
+tokenizer = SinhalaTokenizer()
+
+document = '...'  # may contain multiple sentences
+
+tokenized_sentences = [tokenizer.tokenize(f'{ss}.') for ss in tokenizer.split_sentences(document)]
+
+tagger = POSTagger()
+
+pos_tags = tagger.predict(tokenized_sentences)
+```
 
 ### Word Joiner (Morphological Joiner)
 ```python
