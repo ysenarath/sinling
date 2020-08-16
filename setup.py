@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="sinling",  # Replace with your own username
-    version="0.0.1",
+    version="0.2.0",
     author="Yasas Senarath",
     description="A language processing tool for Sinhalese (සිංහල)",
     long_description=long_description,
