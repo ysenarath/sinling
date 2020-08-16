@@ -3,3 +3,5 @@
 data/
 *.pickle
 venv/
+notebooks/Sinhala-POS-Data/
+.ipynb_checkpoints/
