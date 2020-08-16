@@ -2,7 +2,7 @@ import os
 import pickle
 from statistics import harmonic_mean
 
-from sinling.config import BIN_PATH
+from sinling.config import RESOURCE_PATH
 from sinling.core.splitter import Splitter
 
 __all__ = [
@@ -57,7 +57,7 @@ class CorpusBasedSplitter(Splitter):
         }
 
 
-_data_path = os.path.join(BIN_PATH, 'stat.split.pickle')
+_data_path = os.path.join(RESOURCE_PATH, 'stat.split.pickle')
 if os.path.exists(_data_path):
     word_splitter = CorpusBasedSplitter(_data_path)
 else:
