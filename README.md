@@ -1,5 +1,3 @@
-class POSTagger(object):
-    pass# SinLing 
 A language processing tool for Sinhalese (සිංහල). 
 
 `Update 2020.08.16: Integrated Part of speech tagger and stemmer tool.`
