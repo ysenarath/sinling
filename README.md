@@ -6,7 +6,6 @@
 All java code is ported to Python implementation for convenience.`
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ysenarath/sinling/37fbcbaef51f0ff87ea9dcca4617ff427f7d34ce)
-![Upload Python Package](https://github.com/ysenarath/sinling/workflows/Upload%20Python%20Package/badge.svg?branch=master)
 [![PyPI version](https://badge.fury.io/py/sinling.svg)](https://badge.fury.io/py/sinling)
 
 ## How to get started
