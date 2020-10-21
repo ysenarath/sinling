@@ -3,7 +3,7 @@ from typing import List, Text, Tuple
 
 import joblib
 
-from sinling import SinhalaStemmer
+from sinling.sinhala.stemmer import SinhalaStemmer
 from sinling.config import RESOURCE_PATH
 from sinling.core import Tagger
 

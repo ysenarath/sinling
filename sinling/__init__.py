@@ -1,1 +1,1 @@
-from .sinhala import *
+from sinling.sinhala import *
