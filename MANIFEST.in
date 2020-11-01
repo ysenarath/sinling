@@ -1,0 +1,2 @@
+graft sinling/resources
+global-exclude *.pyc
