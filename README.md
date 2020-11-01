@@ -14,8 +14,6 @@ All java code is ported to Python implementation for convenience.`
 
 ## Installation
 
-### pip
-
 Run the following command in your virtualenv to install this package.
 
 `pip install sinling`
