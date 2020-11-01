@@ -1,5 +1,7 @@
 # A language processing tool for Sinhalese (සිංහල). 
 
+`Update 2020.11.01: Fixed pypi package. Use 'pip install sinling' to install sinling directly from repository.`
+
 `Update 2020.08.16: Add pypi package @ https://pypi.org/project/sinling/.`
 
 `Update 2020.08.16: Integrated Part of speech tagger and stemmer tool.`
@@ -12,16 +14,9 @@ All java code is ported to Python implementation for convenience.`
 
 ## Installation
 
-### from source (recommended)
-Steps-
-1. Download [`stat.split.pickle`](https://github.com/ysenarath/sinling/releases/download/v0.1-alpha/stat.split.pickle) to the `resources` folder
-1. Import required tools from the `sinling` module in your desired project 
-(you may have to append this project path to your path environment variable)
-
-
 ### pip
 
-Run the following command in your virtualenv to install this package [need fix].
+Run the following command in your virtualenv to install this package.
 
 `pip install sinling`
 
