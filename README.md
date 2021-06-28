@@ -78,7 +78,7 @@ results = word_splitter.split(word)
 # Returns a dict containing debug information, base word and affix
 ```
 
-Visit [here](https://github.com/ysenarath/sinling/blob/master/scripts/splitter.ipynb) to see some sample splits.
+Visit [here](https://github.com/ysenarath/sinling/blob/master/notebooks/splitter.ipynb) to see some sample splits.
 
 ## Contributions
 - Contact `wayasas.13@cse.mrt.ac.lk` if you would like to contribute to this project.
