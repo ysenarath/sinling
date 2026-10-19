@@ -183,6 +183,41 @@ sinling.download("sinhala-stem-dictionary")  # for the dictionary stemmer
 
 `normalize`, `tokenize` and `sentences` need no downloads.
 
+## Accuracy
+
+Every backend is scored on public test sets. These are the default backends on the two
+[Universal Dependencies](https://universaldependencies.org/) Sinhala treebanks (release 2.18):
+
+| Task | Backend | Dataset | Precision | Recall | F1 |
+| --- | --- | --- | --- | --- | --- |
+| tokenize | rules | [UD Sinhala STB](https://universaldependencies.org/treebanks/si_stb) (100 sentences) | 1.000 | 1.000 | 1.000 |
+| tokenize | rules | [UD Sinhala Appuwa](https://universaldependencies.org/treebanks/si_appuwa) (69 sentences) | 0.994 | 0.997 | 0.996 |
+| sentences | rules | UD Sinhala STB | 1.000 | 1.000 | 1.000 |
+| sentences | rules | UD Sinhala Appuwa | 0.958 | 1.000 | 0.979 |
+
+The treebanks put a space around every punctuation mark, so their text is detokenized first
+(`. , ? ! : ;` and closing brackets are joined to the word before them). Tokens are scored by
+their exact character spans, sentences by where they end. Most of the remaining differences are
+annotation choices in Appuwa: two tokens keep their punctuation attached (`නැහැ,`), and three
+sentences contain a full stop inside them, where the splitter ends a sentence. The test sets are
+small, so treat these numbers as a check, not a ranking.
+
+Reproduce the table, or score a backend on your own CoNLL-U file:
+
+```
+python -m sinling evaluate
+python -m sinling evaluate --task tokenize --dataset my-test-set.conllu
+```
+
+```python
+report = sinling.evaluate("sentences", "ud-sinhala-appuwa")
+print(report.f1, report.counts)
+```
+
+The treebanks are licensed CC BY-SA 4.0 and are downloaded on first use. If you use them, cite
+Liyanage, Sarveswaran et al. (2023), *Sinhala Dependency Treebank (STB)*, UDW 2023, and the
+UD Sinhala Appuwa treebank.
+
 ## Roadmap
 
 0.4 is being built in milestones:

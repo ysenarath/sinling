@@ -22,6 +22,7 @@ from sinling.script import aksharas
 from sinling.tokenization import sentences, tokenize
 from sinling.stemming import stem
 from sinling.legacy_fonts import from_legacy_font
+from sinling.evaluation import evaluate
 
 try:
     __version__ = version('sinling')
@@ -30,7 +31,7 @@ except PackageNotFoundError:  # imported from a source checkout without installi
 
 __all__ = [
     'Backend', 'BackendInfo', 'Doc', 'Pipeline', 'Resource', 'Span', 'Task', 'Token',
-    'aksharas', 'backends', 'define_task', 'download', 'from_legacy_font', 'get_backend', 'normalize', 'pipeline', 'register',
+    'aksharas', 'backends', 'define_task', 'download', 'evaluate', 'from_legacy_font', 'get_backend', 'normalize', 'pipeline', 'register',
     'sentences', 'stem', 'tokenize',
     'register_resource', 'resource_path', 'run_task',
     'DocError', 'MissingDependencyError', 'PipelineError', 'ResourceIntegrityError',
