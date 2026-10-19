@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sinling"
-version = "0.4.0.dev0"
+version = "0.4.0a1"
 description = "A language processing toolkit for Sinhala (සිංහල)"
 readme = "README.md"
 requires-python = ">=3.11"
