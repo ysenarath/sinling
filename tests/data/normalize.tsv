@@ -1,0 +1,49 @@
+input	expected	preset	rule	note
+ක\u200bර	කර	standard	invisible	zero-width space removed
+\ufeffගම	ගම	standard	invisible	byte order mark removed
+ගෙ\u00adදර	ගෙදර	standard	invisible	soft hyphen removed
+ගම\u200e	ගම	standard	invisible	left-to-right mark removed
+මෙ\u0dd9	මෛ	standard	doubled_signs	two kombuvas typed for kombu deka
+කෘ\u0dd8	කෲ	standard	doubled_signs	two gaetta-pillas typed for diga gaetta-pilla
+ක\u0ddf\u0ddf	ක\u0df3	standard	doubled_signs	two gayanukittas typed for diga gayanukitta
+කෙ\u0dd9ග	කෛග	standard	doubled_signs	logical kombu deka is not mistaken for visual order
+\u0dd9ගදර	ගෙදර	standard	reorder	kombuva typed before its consonant
+\u0dd9කා	කො	standard	reorder	visual-order \u0ddc, composed by NFC after reordering
+\u0dd9ක්\u200dර	ක්\u200dරෙ	standard	reorder	kombuva moves after a whole rakaransaya cluster
+\u0dd9\u0dd9ම	මෛ	standard	reorder	visual-order kombu deka
+\u0dd9මෙග	මෙගෙ	standard	reorder	two visual-order syllables in a row
+\u0dd9එ	ඓ	standard	reorder	visual-order ඓ
+කා \u0dd9ම	කා මෙ	standard	reorder	kombuva after a space moves to the next consonant
+ගෙදර	ගෙදර	standard	reorder	logical order is left alone
+අා	ආ	standard	vowel_letters	අ + \u0dcf is ආ (Unicode DoNotEmit)
+අැ	ඇ	standard	vowel_letters	අ + \u0dd0 is ඇ
+අෑ	ඈ	standard	vowel_letters	අ + \u0dd1 is ඈ
+උෟ	ඌ	standard	vowel_letters	උ + \u0ddf (gayanukitta) is ඌ
+උෘ	උෘ	standard	vowel_letters	උ + \u0dd8 (gaetta-pilla) is not ඌ; 0.3 wrongly mapped it
+එ්	ඒ	standard	vowel_letters	එ + \u0dca is ඒ
+ඔෟ	ඖ	standard	vowel_letters	ඔ + \u0ddf is ඖ
+ක\u200d\u0dcaය	ක්\u200dය	standard	zwj	yansaya with ZWJ before al-lakuna
+ර\u200d\u0dcaක	ර්\u200dක	standard	zwj	repaya with ZWJ before al-lakuna
+ක\u200d\u0dcaව	ක\u200d\u0dcaව	standard	zwj	touching letters keep ZWJ before al-lakuna
+ක්\u200d\u200dය	ක්\u200dය	standard	zwj	repeated ZWJ collapses to one
+ම\u200dම	මම	standard	zwj	stray ZWJ between consonants removed
+ක්\u200cෂ	ක්ෂ	standard	zwj	ZWNJ in Sinhala removed
+👨\u200d👩	👨\u200d👩	standard	zwj	emoji ZWJ sequence untouched
+ශ්\u200dරී	ශ්\u200dරී	standard	zwj	ශ්\u200dරී is already canonical
+\u200c\u200dඑ	එ	standard	zwj	a run of joiners is removed as one unit
+ක්\u200dය	ක්ය	search	zwj	search preset strips ZWJ
+ක\u200d\u0dcaව	ක්ව	search	zwj	search preset strips touching-letter ZWJ too
+👨\u200d👩	👨\u200d👩	search	zwj	search preset keeps emoji ZWJ
+කෙ\u0dcf	කො	standard	nfc	two-part \u0ddc in logical order
+කෙ\u0dca	කේ	standard	nfc	two-part \u0dda
+කෙ\u0dcf\u0dca	කෝ	standard	nfc	three-part \u0ddd
+කෙ\u200d\u0dcf	කො	standard	nfc	stray ZWJ between signs no longer blocks \u0ddc
+cafe\u0301	café	standard	nfc	non-Sinhala text is NFC-normalized too
+මම\u00a0ගෙදර	මම ගෙදර	standard	whitespace	no-break space becomes a space
+  මම   යනවා  	මම යනවා	standard	whitespace	runs collapse and ends are trimmed
+මම \n  යනවා	මම\nයනවා	standard	whitespace	spaces around a line break removed
+a\t\tb	a b	standard	whitespace	tabs collapse to one space
+මම\n\nයනවා	මම\n\nයනවා	standard	whitespace	paragraph breaks are kept
+   		standard	whitespace	whitespace-only text becomes empty
+ශ්\u200dරී ලංකාව	ශ්\u200dරී ලංකාව	standard	all	clean text is unchanged
+\u200b\u0dd9කා\u00a0අාව	කො ආව	standard	all	several rules in one sentence

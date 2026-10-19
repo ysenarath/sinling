@@ -24,7 +24,7 @@ class DocTextTest(unittest.TestCase):
         self.assertEqual(doc.to_raw(0, 5), (0, 6))
 
     def test_deletion_keeps_neighbours_tight(self):
-        doc = Doc('ab​cd')
+        doc = Doc('ab\u200bcd')
         doc.edit_text([(2, 3, '')])
         self.assertEqual(doc.text, 'abcd')
         self.assertEqual(doc.to_raw(0, 2), (0, 2))  # ends before the deleted character
@@ -45,7 +45,7 @@ class DocTextTest(unittest.TestCase):
         self.assertEqual(doc.to_raw(2, 3), (1, 2))
 
     def test_edits_compose_across_calls(self):
-        doc = Doc('a​b​c')
+        doc = Doc('a\u200bb\u200bc')
         doc.edit_text([(1, 2, ''), (3, 4, '')])
         doc.edit_text([(1, 2, 'BB')])
         self.assertEqual(doc.text, 'aBBc')
@@ -115,7 +115,7 @@ class DocTokensTest(unittest.TestCase):
             self.doc.span_text(Span(1, 3))
 
     def test_tokens_after_normalization_map_to_raw(self):
-        doc = Doc('ක​ර ගම')
+        doc = Doc('ක\u200bර ගම')
         doc.edit_text([(1, 2, '')])
         doc.set_tokens([Token('කර', 0, 2), Token('ගම', 3, 5)])
         self.assertEqual(doc.to_raw(doc.tokens[0]), (0, 3))
@@ -124,7 +124,7 @@ class DocTokensTest(unittest.TestCase):
 
 class DocSerializationTest(unittest.TestCase):
     def test_round_trip_through_json(self):
-        doc = Doc('ක​ර ගම')
+        doc = Doc('ක\u200bර ගම')
         doc.edit_text([(1, 2, '')])
         doc.set_tokens([Token('කර', 0, 2, {'pos': 'VB'}), Token('ගම', 3, 5)])
         doc.sents = [Span(0, 2)]

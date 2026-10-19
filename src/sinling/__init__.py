@@ -17,6 +17,8 @@ from sinling.errors import (
 from sinling.pipeline import Pipeline, pipeline
 from sinling.registry import Backend, BackendInfo, Task, backends, define_task, get_backend, register, run_task
 from sinling.resources import Resource, download, register_resource, resource_path
+from sinling.normalization import normalize
+from sinling.script import aksharas
 
 try:
     __version__ = version('sinling')
@@ -25,7 +27,7 @@ except PackageNotFoundError:  # imported from a source checkout without installi
 
 __all__ = [
     'Backend', 'BackendInfo', 'Doc', 'Pipeline', 'Resource', 'Span', 'Task', 'Token',
-    'backends', 'define_task', 'download', 'get_backend', 'pipeline', 'register',
+    'aksharas', 'backends', 'define_task', 'download', 'get_backend', 'normalize', 'pipeline', 'register',
     'register_resource', 'resource_path', 'run_task',
     'DocError', 'MissingDependencyError', 'PipelineError', 'ResourceIntegrityError',
     'ResourceUnavailableError', 'SinlingError', 'UnknownBackendError', 'UnknownResourceError',
