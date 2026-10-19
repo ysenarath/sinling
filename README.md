@@ -107,6 +107,28 @@ licence, so Sinling does not ship the data: the suffix list (6 KB) and the stem 
 (1.3 MB) are downloaded from that repository on first use, pinned to one commit and checked
 against a SHA-256 checksum.
 
+## Legacy fonts
+
+Many Sinhala PDFs and Word files still use legacy fonts such as FMAbhaya, which draw Sinhala
+letters on Latin characters, so extracted text reads as gibberish. `from_legacy_font()`
+converts it to Unicode and then normalizes it:
+
+```python
+>>> sinling.from_legacy_font('jd;h" c,h" wdydr')
+'වාතය, ජලය, ආහාර'
+
+>>> sinling.from_legacy_font("fomd\xbe;f\xefka;=j")
+'දෙපාර්තමේන්තුව'
+
+```
+
+The `fm` backend covers the FM font family (FMAbhaya, FMMalithi, FMEmanee, FMAbabld and others
+that share the Wijesekara layout). It matched the original converter on 2.8 million characters
+of text extracted from school textbooks. Only convert text that is actually in a legacy font,
+because Latin letters and punctuation are remapped; in a PDF, pick the spans whose font
+`sinling.legacy_fonts.is_fm_font(name)` accepts. Characters without a mapping are kept and
+counted in `doc.meta["legacy_font_unmapped"]`. DL fonts and Tamil legacy fonts are planned.
+
 ## Documents, pipelines and offsets
 
 Task functions such as `normalize()` return plain values. To run several steps and keep
@@ -166,8 +188,8 @@ sinling.download("sinhala-stem-dictionary")  # for the dictionary stemmer
 0.4 is being built in milestones:
 
 - **0.4.0a1** — core API, `Doc`, pipelines, plugins, `normalize()` and akshara segmentation.
-- **0.4.0a2** — tokenization and stemming on the new core, legacy FM font to Unicode
-  conversion, the first downloadable resources.
+- **0.4.0a2** — tokenization, sentence splitting and stemming on the new core, legacy FM font
+  to Unicode conversion, the first downloadable resources.
 - **0.4.0** — documentation in Sinhala and English, an evaluation harness, a stable API.
 
 ## Development
