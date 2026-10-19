@@ -1,15 +1,18 @@
 # Sinling
 
-A language processing toolkit for Sinhala (සිංහල).
+A toolkit for working with Sinhala (සිංහල) text in Python. It cleans up text, splits it into
+words and sentences, finds word stems, and turns text typed in old Sinhala fonts into proper
+Unicode.
 
 [![PyPI version](https://badge.fury.io/py/sinling.svg)](https://badge.fury.io/py/sinling)
 
-> **Sinling 0.4 is in development.** It is a redesign with a new API and is **not compatible
-> with 0.3**. 0.4 pre-releases install only when you ask for them (`pip install --pre sinling`).
+> **Sinling 0.4 is in development.** It works differently from 0.3, so code written for 0.3
+> won't run on it. A plain `pip install sinling` still installs 0.3; to try 0.4, use
+> `pip install --pre sinling`.
 >
-> If your code uses the 0.3 API (`SinhalaTokenizer`, `SinhalaStemmer`, `POSTagger`,
-> `word_joiner`, `word_splitter`, `preprocess`), pin the version: `pip install "sinling<0.4"`,
-> or `sinling<0.4` in `requirements.txt`. The 0.3 documentation is in the
+> If your code uses `SinhalaTokenizer`, `SinhalaStemmer`, `POSTagger`, `word_joiner`,
+> `word_splitter` or `preprocess`, keep using 0.3 with `pip install "sinling<0.4"` (or
+> `sinling<0.4` in `requirements.txt`). The 0.3 documentation is in the
 > [0.3.7 README](https://github.com/ysenarath/sinling/blob/v0.3.7/README.md).
 
 ## Installation
@@ -18,7 +21,7 @@ A language processing toolkit for Sinhala (සිංහල).
 pip install --pre sinling
 ```
 
-Sinling 0.4 needs Python 3.11 or newer and has no dependencies.
+You need Python 3.11 or newer. Nothing else is installed with it.
 
 ## Quick start
 
@@ -28,47 +31,40 @@ Sinling 0.4 needs Python 3.11 or newer and has no dependencies.
 >>> sinling.normalize("\N{SINHALA VOWEL SIGN KOMBUVA}ගදර\N{NO-BREAK SPACE}යනවා")
 'ගෙදර යනවා'
 
->>> print(" / ".join(sinling.aksharas("ශ්‍රී ලංකාව")))
+>>> print(" / ".join(sinling.aksharas("ශ්\N{ZERO WIDTH JOINER}රී ලංකාව")))
 ශ්‍රී /   / ලං / කා / ව
 
 ```
 
-## Normalization
+## Cleaning up text
 
-Sinhala text reaches you in many encodings of the same words: typed in visual order, copied
-from PDFs, pasted with invisible characters. `sinling.normalize()` converts it to one canonical
-Unicode form. It applies these rules in order:
+The same Sinhala word can be stored in different ways: typed with a vowel sign in the wrong
+order, copied from a PDF, or pasted with invisible characters inside. The words look the same,
+but a computer treats them as different, so search and word counts go wrong. `normalize()`
+cleans up the text so that the same word is always stored the same way. It:
 
-1. **Invisible characters** — removes zero-width spaces, byte order marks, soft hyphens, word
-   joiners and direction marks.
-2. **Joiners** — puts each zero-width joiner (ZWJ) where SLS 1134 expects it for yansaya,
-   rakaransaya, repaya and touching letters, and drops stray ZWJ and ZWNJ. Joiners in emoji
-   sequences are left alone.
-3. **Doubled signs** — two kombuvas typed for kombu deka become `ෛ`; the same for `ෲ` and `ෳ`.
-4. **Visual order** — moves a vowel sign typed before its consonant (`ෙ` + `ක`) after it.
-5. **Vowel letters** — replaces sequences such as `අ` + `ා` with `ආ`, following the Unicode
-   Standard's list of sequences not to use.
-6. **NFC** — Unicode normalization, which merges two-part vowel signs such as `ෙ` + `ා` into `ො`.
-7. **Whitespace** — turns runs of spaces, tabs and other Unicode spaces into one space and
-   trims each line. Line breaks are kept.
+- removes invisible characters such as zero-width spaces;
+- puts the joiner used in `ක්‍ය`, `ක්‍ර` and `ර්‍ක` where the Sinhala Unicode standard expects it,
+  and removes joiners that don't belong;
+- turns two kombuvas into kombu deka (`ෛ`);
+- moves a kombuva typed before its letter to after it;
+- replaces a vowel letter plus a sign, such as `අ` + `ා`, with the single letter `ආ`;
+- joins vowel signs typed in two parts;
+- tidies up spaces.
 
-Two presets are available. `"standard"` (the default) is safe for display and storage.
-`"search"` also strips every ZWJ next to Sinhala letters, so spelling variants match. Turn a
-single rule off by name:
+For search, `preset="search"` also removes the joiners, so `ශ්‍රී` and `ශ්රී` match. You can turn
+off any fix by name:
 
 ```python
->>> sinling.normalize("ශ්‍රී", preset="search") == "ශ්රී"
+>>> sinling.normalize("ශ්\N{ZERO WIDTH JOINER}රී", preset="search") == "ශ්රී"
 True
 
->>> sinling.normalize("  \N{SINHALA VOWEL SIGN KOMBUVA}ගදර  ", reorder=False, whitespace="keep")
-'  ෙගදර  '
+>>> sinling.normalize("  ගම  ", whitespace="keep")
+'  ගම  '
 
 ```
 
-The options are `invisible`, `zwj` (`"canonical"`, `"strip"` or `"keep"`), `doubled_signs`,
-`reorder`, `vowel_letters`, `nfc` and `whitespace` (`"collapse"` or `"keep"`).
-
-## Tokens and sentences
+## Words and sentences
 
 ```python
 >>> sinling.tokenize("පෙ.ව. 10ට රු.500ක් ගෙවන්න.")
@@ -79,39 +75,31 @@ The options are `invisible`, `zwj` (`"canonical"`, `"strip"` or `"keep"`), `doub
 
 ```
 
-Strings are normalized before tokenizing; pass `normalize=False` to skip that. Tokenizing never
-changes the text. Each token records its kind in `token.attrs["kind"]`: `word`, `number`,
-`punct`, `symbol`, `abbreviation`, `url`, `email`, `mention`, `hashtag`, `emoji` or `other`.
-Known abbreviations such as `පෙ.ව.` and `රු.` keep their full stop; add your own with
-`extra_abbreviations=[...]`.
+Text is cleaned up first, and the words are always exact pieces of it. Common abbreviations
+such as `පෙ.ව.` and `රු.` keep their full stop; add your own with `extra_abbreviations=[...]`.
+A sentence ends after `.` `?` `!` `…` or `෴`, at a blank line, or before a new list item.
 
-A sentence ends after `.` `?` `!` `…` or the kunddaliya `෴`, at a blank line, and before a
-list item. A number and full stop at the start of a line (`1.`) is a list marker, not a
-sentence end.
-
-## Stemming
+## Word stems
 
 ```python
-sinling.stem("පොත්වලින් කියවන්න.")                         # ['පොත', 'කියව', '.']
-sinling.stem("පිහිටවීමට", backend="dictionary")            # ['පිහිටවීම']
+sinling.stem("පොත්වලින් කියවන්න.")                 # ['පොත', 'කියව', '.']
+sinling.stem("පිහිටවීමට", backend="dictionary")    # ['පිහිටවීම']
 ```
 
-The default `suffix` backend strips the longest known suffix. The `dictionary` backend looks
-words up in a 27,197-word stem dictionary first. Only word tokens are stemmed; in a pipeline,
-each token also gets `attrs["stem"]` and `attrs["suffix"]`.
+By default `stem()` removes the longest ending it knows. With `backend="dictionary"` it looks the
+word up in a 27,197-word dictionary first.
 
 The stemmer and its data come from the
 [sinhala-stemmer](https://github.com/rksk/sinhala-news-analysis/tree/master/sinhala-stemmer)
-of the Sinhala News Analysis project; please cite it if you use them. Its repository has no
-licence, so Sinling does not ship the data: the suffix list (6 KB) and the stem dictionary
-(1.3 MB) are downloaded from that repository on first use, pinned to one commit and checked
-against a SHA-256 checksum.
+of the Sinhala News Analysis project; please cite it if you use it. Their data has no licence, so
+it isn't included in Sinling. It is downloaded from their repository the first time you use the
+stemmer, always the same version, and checked to make sure it arrived intact.
 
-## Legacy fonts
+## Old Sinhala fonts
 
-Many Sinhala PDFs and Word files still use legacy fonts such as FMAbhaya, which draw Sinhala
-letters on Latin characters, so extracted text reads as gibberish. `from_legacy_font()`
-converts it to Unicode and then normalizes it:
+Many Sinhala PDFs and Word files use old fonts such as FMAbhaya, which show Sinhala letters in
+place of English ones. Copied text then reads as gibberish. `from_legacy_font()` turns it into
+proper Unicode Sinhala:
 
 ```python
 >>> sinling.from_legacy_font('jd;h" c,h" wdydr')
@@ -122,124 +110,87 @@ converts it to Unicode and then normalizes it:
 
 ```
 
-The `fm` backend covers the FM font family (FMAbhaya, FMMalithi, FMEmanee, FMAbabld and others
-that share the Wijesekara layout). It matched the original converter on 2.8 million characters
-of text extracted from school textbooks. Only convert text that is actually in a legacy font,
-because Latin letters and punctuation are remapped; in a PDF, pick the spans whose font
-`sinling.legacy_fonts.is_fm_font(name)` accepts. Characters without a mapping are kept and
-counted in `doc.meta["legacy_font_unmapped"]`. DL fonts and Tamil legacy fonts are planned.
+It supports the FM fonts (FMAbhaya, FMMalithi, FMEmanee, FMAbabld and others) and was tested on
+2.8 million characters from school textbooks. Convert only text that is in an old font, because
+English letters are turned into Sinhala ones. DL fonts and old Tamil fonts are planned.
 
-## Documents, pipelines and offsets
+## Doing several things at once
 
-Task functions such as `normalize()` return plain values. To run several steps and keep
-everything, use a pipeline, which returns a `Doc`. `sinling.pipeline()` with no steps runs
-normalize, tokenize and sentences. A `Doc` keeps the original text, the working
-text and an alignment between them, so any result can be traced back to the input:
+A pipeline runs several steps on your text and gives you a `Doc` with all the results. The `Doc`
+also remembers where each word was in your original text, even after clean-up:
 
 ```python
->>> nlp = sinling.pipeline(["normalize"])
->>> doc = nlp("\N{ZERO WIDTH SPACE}මම\N{NO-BREAK SPACE}\N{NO-BREAK SPACE}\N{SINHALA VOWEL SIGN KOMBUVA}ගදර")
->>> doc.text
-'මම ගෙදර'
->>> start, end = doc.to_raw(3, 7)  # 'ගෙදර' in the normalized text
->>> doc.raw[start:end] == "\N{SINHALA VOWEL SIGN KOMBUVA}ගදර"
-True
+>>> doc = sinling.pipeline()("\N{ZERO WIDTH SPACE}මම යනවා. ඔයා එනවා.")
+>>> [token.text for token in doc.tokens]
+['මම', 'යනවා', '.', 'ඔයා', 'එනවා', '.']
+>>> start, end = doc.to_raw(doc.tokens[1])
+>>> doc.raw[start:end]
+'යනවා'
 
 ```
 
-A `Doc` also holds tokens, sentences and labelled spans, and converts to and from JSON with
-`doc.to_dict()` and `Doc.from_dict()`.
+## Choosing how a task is done
 
-## Backends and plugins
-
-Each task can have several interchangeable backends, chosen with `backend=`:
+Some tasks can be done in more than one way. Choose with `backend="..."`, and see the options
+with `sinling.backends()`:
 
 ```python
->>> [(b.name, b.default) for b in sinling.backends("normalize")]
-[('rules', True)]
+>>> [(b.name, b.default) for b in sinling.backends("stem")]
+[('dictionary', False), ('suffix', True)]
 
 ```
 
-Other packages can add backends without changes to Sinling, through the `sinling.backends`
-entry-point group. By convention they are published as `sinling-<name>`:
+Other packages can add more ways as plugins, published on PyPI as `sinling-<name>`.
 
-```toml
-[project.entry-points."sinling.backends"]
-"normalize.mybackend" = "sinling_mybackend:MyNormalizer"
-```
+## Downloads and offline use
 
-A plugin is imported only when one of its backends is first used. Plugin authors subclass
-`sinling.Backend` and find the rest of the registry in `sinling.registry`. `sinling.backends()`
-also lists what each backend downloads on first use; an empty list means it works offline from
-the start.
-
-## Resources and offline use
-
-Models and dictionaries are downloaded on first use, checked against a SHA-256 checksum and
-cached in `~/.cache/sinling`. Set `SINLING_HOME` to use another directory, and
-`SINLING_OFFLINE=1` to forbid downloads. To prepare an offline machine, fetch what you need on a
-connected one and copy the cache directory over:
+Cleaning up text, splitting it, and converting old fonts work without the internet. The stemmer
+downloads its data the first time you use it, into `~/.cache/sinling`. To use it on a computer
+without internet, download it on another computer and copy that folder over:
 
 ```python
-sinling.download("sinhala-suffixes")         # for the suffix stemmer
-sinling.download("sinhala-stem-dictionary")  # for the dictionary stemmer
+sinling.download("sinhala-suffixes")
+sinling.download("sinhala-stem-dictionary")
 ```
 
-`normalize`, `tokenize` and `sentences` need no downloads.
+Set `SINLING_HOME` to save downloads elsewhere, and `SINLING_OFFLINE=1` to make sure Sinling
+never connects.
 
 ## Accuracy
 
-Every backend is scored on public test sets. These are the default backends on the two
-[Universal Dependencies](https://universaldependencies.org/) Sinhala treebanks (release 2.18):
+Tested on the two Sinhala treebanks of [Universal Dependencies](https://universaldependencies.org/),
+collections of sentences split into words by hand:
 
-| Task | Backend | Dataset | Precision | Recall | F1 |
-| --- | --- | --- | --- | --- | --- |
-| tokenize | rules | [UD Sinhala STB](https://universaldependencies.org/treebanks/si_stb) (100 sentences) | 1.000 | 1.000 | 1.000 |
-| tokenize | rules | [UD Sinhala Appuwa](https://universaldependencies.org/treebanks/si_appuwa) (69 sentences) | 0.994 | 0.997 | 0.996 |
-| sentences | rules | UD Sinhala STB | 1.000 | 1.000 | 1.000 |
-| sentences | rules | UD Sinhala Appuwa | 0.958 | 1.000 | 0.979 |
+| Task | Test data | Precision | Recall | F1 |
+| --- | --- | --- | --- | --- |
+| Splitting into words | [UD Sinhala STB](https://universaldependencies.org/treebanks/si_stb) (100 sentences) | 1.000 | 1.000 | 1.000 |
+| Splitting into words | [UD Sinhala Appuwa](https://universaldependencies.org/treebanks/si_appuwa) (69 sentences) | 0.994 | 0.997 | 0.996 |
+| Splitting into sentences | UD Sinhala STB | 1.000 | 1.000 | 1.000 |
+| Splitting into sentences | UD Sinhala Appuwa | 0.958 | 1.000 | 0.979 |
 
-The treebanks put a space around every punctuation mark, so their text is detokenized first
-(`. , ? ! : ;` and closing brackets are joined to the word before them). Tokens are scored by
-their exact character spans, sentences by where they end. Most of the remaining differences are
-annotation choices in Appuwa: two tokens keep their punctuation attached (`නැහැ,`), and three
-sentences contain a full stop inside them, where the splitter ends a sentence. The test sets are
-small, so treat these numbers as a check, not a ranking.
+1.000 is perfect. Most of the remaining differences come from how the Appuwa sentences were
+marked up. The test sets are small, so treat these numbers as a check rather than a precise
+measure. Run the tests yourself with `python -m sinling evaluate`, or on your own data in CoNLL-U
+format with `--task tokenize --dataset my-file.conllu`.
 
-Reproduce the table, or score a backend on your own CoNLL-U file:
+The test data is licensed CC BY-SA 4.0 and downloaded the first time you run a test. If you
+publish results on it, please cite Liyanage, Sarveswaran et al. (2023), *Sinhala Dependency
+Treebank (STB)*, UDW 2023, and the UD Sinhala Appuwa treebank.
 
-```
-python -m sinling evaluate
-python -m sinling evaluate --task tokenize --dataset my-test-set.conllu
-```
+## What's next
 
-```python
-report = sinling.evaluate("sentences", "ud-sinhala-appuwa")
-print(report.f1, report.counts)
-```
+- **0.4.0a1**: text clean-up and akshara splitting.
+- **0.4.0a2**: splitting into words and sentences, word stems, old FM fonts, accuracy tests.
+- **0.4.0**: a documentation website in Sinhala and English.
 
-The treebanks are licensed CC BY-SA 4.0 and are downloaded on first use. If you use them, cite
-Liyanage, Sarveswaran et al. (2023), *Sinhala Dependency Treebank (STB)*, UDW 2023, and the
-UD Sinhala Appuwa treebank.
-
-## Roadmap
-
-0.4 is being built in milestones:
-
-- **0.4.0a1** — core API, `Doc`, pipelines, plugins, `normalize()` and akshara segmentation.
-- **0.4.0a2** — tokenization, sentence splitting and stemming on the new core, legacy FM font
-  to Unicode conversion, the first downloadable resources.
-- **0.4.0** — documentation in Sinhala and English, an evaluation harness, a stable API.
-
-## Development
+## Contributing
 
 ```
 pip install .
 python -P -m unittest discover -s tests -t tests
 ```
 
-The tests import the installed package, not the source tree. Every push is tested on
-Python 3.11 to 3.14.
+The tests run against the installed package, and every change is tested on Python 3.11 to 3.14.
 
 ## License
 

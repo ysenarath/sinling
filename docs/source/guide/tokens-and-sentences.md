@@ -1,10 +1,10 @@
-# Tokens and sentences
+# Words and sentences
 
-## Tokenization
+## Splitting into words
 
-`tokenize()` splits text into words, numbers, punctuation and other tokens. A string is
-normalized first; tokenizing itself never changes the text, so every token maps back to the
-original.
+`tokenize()` splits text into words, numbers, punctuation marks and other pieces, called
+tokens. The text is cleaned up with `normalize()` first. Tokens are always exact pieces of the
+text, so you can find each one in the original.
 
 ```python
 >>> import sinling
@@ -13,18 +13,18 @@ original.
 
 ```
 
-In a pipeline, each token records its kind in `token.attrs["kind"]`:
+In a pipeline, each token also says what kind of token it is, in `token.attrs["kind"]`:
 
 | Kind | Examples |
 | --- | --- |
-| `word` | `ගෙදර`, `COVID`, `10ට` (a number with a suffix is one word) |
+| `word` | `ගෙදර`, `COVID`, `10ට` (a number with a suffix counts as a word) |
 | `number` | `2026`, `3.14`, `1,000`, `10:30` |
 | `abbreviation` | `පෙ.ව.`, `රු.`, `ඒ.බී.` |
-| `punct` | `.`, `,`, `...` (a run of the same mark is one token) |
+| `punct` | `.`, `,`, `...` (repeated marks stay together) |
 | `symbol` | `%`, `£`, `©` |
 | `url`, `email`, `mention`, `hashtag` | `https://example.lk`, `name@example.lk`, `@user`, `#ශ්‍රීලංකාව` |
-| `emoji` | an emoji with its skin tone or ZWJ sequence |
-| `other` | anything else, such as a stray combining mark |
+| `emoji` | an emoji, including skin tones and combined emoji |
+| `other` | anything else |
 
 ```python
 >>> doc = sinling.pipeline(["tokenize"])("රු.500 #ශ්\N{ZERO WIDTH JOINER}රීලංකා")
@@ -35,16 +35,14 @@ In a pipeline, each token records its kind in `token.attrs["kind"]`:
 
 ### Abbreviations
 
-Known abbreviations keep their full stop. They are recognized only at the start of a word, so
-a sentence ending in `ගව.` still ends there. There are two lists:
+Common abbreviations such as `රු.` and `පෙ.ව.` keep their full stop. A word only counts as an
+abbreviation at its start, so a sentence ending in `ගව.` still ends there.
 
-- `ABBREVIATIONS` stand alone: initials such as `බී.` and `එම්.`, and `රු.`, `ක්‍රි.`.
-- `CHAIN_ABBREVIATIONS` are also common words (`ඒ` "that", `පා`) or occur only in chains such as
-  `පෙ.ව.`, `අ.පො.ස.` and `පා.ම.`. They keep their full stop only when another abbreviation
-  follows directly.
+Some abbreviations are also everyday words, like `ඒ` ("that"). These keep the full stop only
+when another abbreviation follows straight after, as in `ඒ.බී.` or `පා.ම.`; otherwise `ඒ.` is the
+word `ඒ` and a full stop.
 
-Add your own with `extra_abbreviations=`, or replace either list with `abbreviations=` or
-`chain_abbreviations=`:
+To add your own abbreviations, pass `extra_abbreviations=`:
 
 ```python
 >>> sinling.tokenize("ඩො. සිල්වා", extra_abbreviations=["ඩො."])
@@ -52,14 +50,17 @@ Add your own with `extra_abbreviations=`, or replace either list with `abbreviat
 
 ```
 
-## Sentences
+The full lists are `sinling.tokenization.ABBREVIATIONS` and `CHAIN_ABBREVIATIONS`; you can
+replace them with `abbreviations=` and `chain_abbreviations=`.
 
-`sentences()` splits text into sentences, tokenizing it first if needed. A sentence ends:
+## Splitting into sentences
 
-- after `.` `?` `!` `…` or the kunddaliya `෴`, together with any closing quotes or brackets that
-  touch it;
+`sentences()` splits text into sentences. A sentence ends:
+
+- after `.` `?` `!` `…` or the kunddaliya `෴`, together with any closing quote or bracket right
+  after it;
 - at a blank line;
-- before a list item: a line starting with a number and a full stop (`1.`) or a bullet.
+- before a new list item, a line that starts with a number and a full stop (`1.`) or a bullet.
 
 ```python
 >>> sinling.sentences('ඔහු කීවේ "මම එනවා." ඊට පසු ගියේය.')
@@ -70,10 +71,9 @@ Add your own with `extra_abbreviations=`, or replace either list with `abbreviat
 
 ```
 
-Abbreviations don't end a sentence, and a number followed by a full stop at the start of a line
-is a list marker. A colon or semicolon never ends a sentence.
+An abbreviation doesn't end a sentence, and neither does a colon or semicolon.
 
-In a pipeline, the sentences are stored as `doc.sents`, spans of token indices:
+In a pipeline, the sentences are in `doc.sents`:
 
 ```python
 >>> doc = sinling.pipeline()("මම යනවා. ඔයා එනවා.")

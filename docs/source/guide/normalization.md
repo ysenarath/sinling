@@ -1,9 +1,9 @@
 # Normalization
 
-The same Sinhala word can be stored in many ways: typed in visual order, copied from a PDF,
-pasted with invisible characters, or with a joiner in the wrong place. They look identical but
-don't compare equal, which breaks search, counting and every later step. `normalize()` converts
-text to one canonical Unicode form.
+The same Sinhala word can be stored in different ways. It might be typed with a vowel sign in
+the wrong order, copied from a PDF, or pasted with invisible characters inside. On screen the
+words look the same, but a computer treats them as different words, so search and word counts
+go wrong. `normalize()` cleans up the text so that the same word is always stored the same way.
 
 ```python
 >>> import sinling
@@ -12,35 +12,27 @@ text to one canonical Unicode form.
 
 ```
 
-`tokenize()`, `sentences()`, `stem()` and `from_legacy_font()` normalize their input first,
-unless you pass `normalize=False`.
+`tokenize()`, `sentences()`, `stem()` and `from_legacy_font()` clean up your text this way
+first. Pass `normalize=False` if you don't want that.
 
-## Rules
+## What it fixes
 
-The rules run in this order:
+| Option | What it fixes | Example |
+| --- | --- | --- |
+| `invisible` | Removes invisible characters: zero-width spaces, byte order marks, soft hyphens and direction marks. | `ක` + zero-width space + `ර` → `කර` |
+| `zwj` | Puts the zero-width joiner (ZWJ) used in `ක්‍ය`, `ක්‍ර`, `ර්‍ක` and `ක‍්ව` where the Sinhala Unicode standard (SLS 1134) expects it, and removes joiners that don't belong. Joiners in emoji are left alone. | `ක` + ZWJ + `්` + `ය` → `ක්‍ය` |
+| `doubled_signs` | Two kombuvas typed for kombu deka become `ෛ`; the same for `ෲ` and `ෳ`. | `ම` + `ෙ` + `ෙ` → `මෛ` |
+| `reorder` | Moves a kombuva typed before its letter, as on an old typewriter, to after it. | `ෙ` + `ග` → `ගෙ` |
+| `vowel_letters` | Replaces a vowel letter plus a sign with the single vowel letter. | `අ` + `ා` → `ආ` |
+| `nfc` | Joins vowel signs typed in two parts. | `ක` + `ෙ` + `ා` → `කො` |
+| `whitespace` | Turns runs of spaces and tabs into one space and trims the ends of each line. Line breaks are kept. | no-break space → space |
 
-| # | Option | What it does | Example |
-| --- | --- | --- | --- |
-| 1 | `invisible` | Removes zero-width spaces, byte order marks, soft hyphens, word joiners and direction marks. | `ක` U+200B `ර` → `කර` |
-| 2 | `zwj` | Puts each zero-width joiner (ZWJ) where SLS 1134 expects it and drops stray ZWJ and ZWNJ. Only joiners next to Sinhala letters are touched, so emoji sequences survive. | `ක` U+200D U+0DCA `ය` → `ක` U+0DCA U+200D `ය` |
-| 3 | `doubled_signs` | Two kombuvas become kombu deka (`ෛ`); likewise `ෲ` and `ෳ`. | U+0DD9 U+0DD9 → U+0DDB |
-| 4 | `reorder` | Moves a vowel sign typed before its consonant (visual order) after the whole consonant cluster. | U+0DD9 `ග` → `ගෙ` |
-| 5 | `vowel_letters` | Replaces an independent vowel plus a sign with the vowel letter, using the Unicode Standard's list of sequences not to use (DoNotEmit.txt). | `අ` + `ා` → `ආ` |
-| 6 | `nfc` | Unicode NFC, which merges two-part vowel signs typed in logical order. | U+0DD9 U+0DCF → `ො` |
-| 7 | `whitespace` | Turns runs of spaces, tabs and other Unicode spaces into one space, removes spaces around line breaks and trims both ends. Line breaks are kept. | U+00A0 → space |
+Running `normalize()` on text that is already clean doesn't change it.
 
-Joiners are handled before the vowel-sign rules because a stray joiner can hide a sign from
-them. Well-formed text needs one pass; on malformed input one rule can enable another, so the
-rules repeat (at most four passes) until the text stops changing. Running `normalize()` twice
-always gives the same result as running it once.
+## Options
 
-The SLS 1134 joiner positions are: after the al-lakuna for yansaya (`ක්‍ය`), rakaransaya
-(`ක්‍ර`) and repaya (`ර්‍ක`), and before it for touching letters (`ක‍්ව`).
-
-## Presets and options
-
-`preset="standard"` (the default) is safe for display and storage. `preset="search"` also
-strips every joiner next to Sinhala letters, so spelling variants match:
+The default is safe for showing and storing text. For search, use `preset="search"`, which
+also removes the joiners, so `ශ්‍රී` and `ශ්රී` match:
 
 ```python
 >>> sinling.normalize("ශ්\N{ZERO WIDTH JOINER}රී", preset="search") == "ශ්රී"
@@ -48,8 +40,8 @@ True
 
 ```
 
-Turn single rules off by name. `zwj` takes `"canonical"`, `"strip"` or `"keep"`, and
-`whitespace` takes `"collapse"` or `"keep"`:
+Turn off any fix by its option name. `zwj` can also be `"strip"` (remove all joiners) or
+`"keep"`, and `whitespace` can be `"keep"`:
 
 ```python
 >>> sinling.normalize("  ගම  ", whitespace="keep")
@@ -57,16 +49,16 @@ Turn single rules off by name. `zwj` takes `"canonical"`, `"strip"` or `"keep"`,
 
 ```
 
-## What normalization does not do
+## What it doesn't do
 
-- It doesn't convert legacy-font text; use [`from_legacy_font()`](legacy-fonts.md) first.
-- It doesn't fold long and short vowels or spelling variants, because that changes meaning.
-- Tamil script gets only the NFC and whitespace rules for now.
+- It doesn't convert text typed in old fonts; use [`from_legacy_font()`](legacy-fonts.md) for that.
+- It doesn't change spellings or long and short vowels, because that can change the meaning.
+- For Tamil text it only joins vowel signs and tidies spaces.
 
 ## Aksharas
 
-`aksharas()` splits text into aksharas, the written syllables of Sinhala. It never loses a
-character: joining the result gives back the input.
+`aksharas()` splits text into aksharas, the written syllables of Sinhala. Nothing is lost:
+joining the pieces gives back the original text.
 
 ```python
 >>> print(" / ".join(sinling.aksharas("ශ්\N{ZERO WIDTH JOINER}රී ලංකාව")))
@@ -74,7 +66,6 @@ character: joining the result gives back the input.
 
 ```
 
-A consonant joined by a ZWJ conjunct (yansaya, rakaransaya, repaya or touching letters) stays
-in one akshara with the next consonant; an explicit al-lakuna (`ස්ත`) ends the akshara.
-Characters from other scripts come out one at a time, each with the combining marks that
-follow it.
+Letters joined with a ZWJ, as in `ශ්‍රී` or `ක්‍ය`, stay in one akshara. A letter with a visible
+al-lakuna, as in `ස්ත`, is an akshara of its own. Letters from other scripts come out one at a
+time.

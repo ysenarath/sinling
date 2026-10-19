@@ -1,10 +1,10 @@
-# Legacy fonts
+# Old Sinhala fonts
 
-Before Unicode was common, Sinhala was typed in fonts that draw Sinhala letters on Latin
-characters. Text extracted from a PDF or Word file that uses such a font reads as gibberish:
+Before Unicode, Sinhala was typed in fonts that show Sinhala letters in place of English ones.
+If you copy text from a PDF or Word file that uses one of these fonts, you get gibberish such as
 `jd;h` instead of `වාතය`. Many government documents and school textbooks still use them.
 
-`from_legacy_font()` converts that text to Unicode, then normalizes it:
+`from_legacy_font()` turns that text into proper Unicode Sinhala and cleans it up:
 
 ```python
 >>> import sinling
@@ -18,22 +18,21 @@ characters. Text extracted from a PDF or Word file that uses such a font reads a
 
 ## Supported fonts
 
-| Backend | Fonts |
+| `backend=` | Fonts |
 | --- | --- |
-| `fm` (default) | The FM family: FMAbhaya, FMMalithi, FMEmanee, FMAbabld and others that share the Wijesekara layout. |
+| `fm` (default) | The FM fonts: FMAbhaya, FMMalithi, FMEmanee, FMAbabld and others with the same Wijesekara keyboard layout. |
 
-DL fonts and Tamil legacy fonts such as Bamini are planned.
+Support for DL fonts and for old Tamil fonts such as Bamini is planned. The FM conversion was
+tested on 2.8 million characters from 31 school textbooks.
 
-The `fm` tables were built from the Educational Publications Department textbooks. On 2.8
-million characters of text extracted from 31 of them, the output matched the converter it was
-ported from exactly.
+## Convert only text in an old font
 
-## Only convert legacy-font text
+The converter turns English letters and punctuation into Sinhala, so normal English text would
+be ruined. Text that is already in Unicode Sinhala is left unchanged.
 
-The converter remaps Latin letters and punctuation, so ordinary English or Unicode-font text
-would be garbled. In a PDF, convert only the spans whose font is a legacy font.
-`is_fm_font()` recognizes FM fonts by name, including subset prefixes and three FM-encoded fonts
-whose names don't start with "FM":
+In a PDF, convert only the parts typed in an FM font. `is_fm_font()` tells you whether a font
+name is one of them, including the forms PDFs use, such as `ABCDEF+FMAbhaya`, and three FM
+fonts whose names don't start with "FM":
 
 ```python
 >>> from sinling.legacy_fonts import is_fm_font
@@ -42,12 +41,10 @@ whose names don't start with "FM":
 
 ```
 
-Unicode Sinhala passes through unchanged, so a span that is already Unicode is safe.
+## Characters it doesn't know
 
-## Gaps and offsets
-
-Characters the converter has no mapping for are kept and counted in
-`doc.meta["legacy_font_unmapped"]`, which helps find gaps in the tables:
+Characters the converter doesn't know are left as they are and counted in
+`doc.meta["legacy_font_unmapped"]`, so you can see what's missing:
 
 ```python
 >>> doc = sinling.pipeline(["legacy_font"])("jd;h\N{EURO SIGN}")
@@ -56,8 +53,8 @@ Characters the converter has no mapping for are kept and counted in
 
 ```
 
-Every converted character maps back to the extracted text, including vowel signs that the
-font stores before their consonant:
+You can also find where each converted letter came from in the original text, even though the
+font stores some vowel signs before their letter:
 
 ```python
 >>> doc = sinling.pipeline(["legacy_font"])("frda.")

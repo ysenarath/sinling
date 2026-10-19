@@ -27,6 +27,7 @@ theme:
 
 markdown_extensions:
   - admonition
+  - attr_list
   - tables
   - toc:
       permalink: true
@@ -35,6 +36,33 @@ markdown_extensions:
 
 plugins:
   - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: si
+          name: සිංහල
+          build: true
+          nav_translations:
+            Home: මුල් පිටුව
+            Guide: මාර්ගෝපදේශය
+            Normalization: සාමාන්‍යකරණය
+            Words and sentences: වචන සහ වාක්‍ය
+            Stemming: ප්‍රකෘති සෙවීම
+            Old Sinhala fonts: පැරණි සිංහල ෆොන්ට
+            Documents and pipelines: ලේඛන සහ නල මාර්ග
+            Downloads and offline use: බාගැනීම් සහ නොබැඳි භාවිතය
+            Evaluation: ඇගයීම
+            Writing a plugin: ප්ලගිනයක් ලිවීම
+            Migrating from 0.3: 0.3 සිට මාරු වීම
+            API reference: API සඳහන
+  - autorefs:
+      resolve_closest: true  # the same API anchors exist in each language
   - mkdocstrings:
       handlers:
         python:
@@ -51,9 +79,9 @@ nav:
   - Home: index.md
   - Guide:
       - Normalization: guide/normalization.md
-      - Tokens and sentences: guide/tokens-and-sentences.md
+      - Words and sentences: guide/tokens-and-sentences.md
       - Stemming: guide/stemming.md
-      - Legacy fonts: guide/legacy-fonts.md
+      - Old Sinhala fonts: guide/legacy-fonts.md
       - Documents and pipelines: guide/documents-and-pipelines.md
       - Downloads and offline use: guide/downloads.md
       - Evaluation: guide/evaluation.md

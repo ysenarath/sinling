@@ -1,8 +1,8 @@
 # API reference
 
-Everything listed under `sinling` is the stable user API. Plugin authors also use
-`sinling.registry` and `sinling.resources`. Modules whose names start with an underscore are
-private.
+Every function and class in Sinling, with its options. Most people only need the functions in
+"Tasks" and "Documents and pipelines". The sections after that are for people writing
+plugins.
 
 ## Tasks
 
