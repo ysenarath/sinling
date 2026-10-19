@@ -15,16 +15,18 @@ from sinling.doc import Doc, Span, Token
 from sinling.errors import DocError
 from sinling.registry import Backend, define_task, get_backend, register, run_task
 
-__all__ = ['ABBREVIATIONS', 'RuleSentenceSplitter', 'RuleTokenizer', 'sentences', 'tokenize', 'tokenized']
+__all__ = ['ABBREVIATIONS', 'CHAIN_ABBREVIATIONS', 'RuleSentenceSplitter', 'RuleTokenizer', 'sentences', 'tokenize', 'tokenized']
 
 # Abbreviations that keep their full stop. Most come from 0.3; the rest are common in Sinhala
 # writing: ප.ව. (p.m.), ක්රි.පූ. (BC), අ.පො.ස. (G.C.E.), උ.පෙ. and සා.පෙ. (A/L and O/L).
 ABBREVIATIONS = (
-    'ඒ.', 'බී.', 'සී.', 'ඩී.', 'ඊ.', 'එෆ්.', 'ජී.', 'එච්.', 'අයි.', 'ජේ.', 'කේ.', 'එල්.', 'එම්.',
-    'එන්.', 'ඕ.', 'පී.', 'කිව්.', 'ආර්.', 'එස්.', 'ටී.', 'යූ.', 'වී.', 'ඩබ.', 'ඩබ්ලිව්.', 'ඩබ්.',
-    'එක්ස්.', 'වයි.', 'ඉසෙඩ්.', 'පෙ.', 'ව.', 'රු.', 'පා.',
-    'ප.', 'ක්\N{ZERO WIDTH JOINER}රි.', 'පූ.', 'අ.', 'පො.', 'ස.', 'උ.', 'සා.',
+    'බී.', 'සී.', 'ඩී.', 'ඊ.', 'එෆ්.', 'ජී.', 'එච්.', 'අයි.', 'ජේ.', 'කේ.', 'එල්.', 'එම්.',
+    'එන්.', 'පී.', 'කිව්.', 'ආර්.', 'එස්.', 'ටී.', 'යූ.', 'වී.', 'ඩබ.', 'ඩබ්ලිව්.', 'ඩබ්.',
+    'එක්ස්.', 'වයි.', 'ඉසෙඩ්.', 'රු.', 'ක්\N{ZERO WIDTH JOINER}රි.',
 )
+# Abbreviations that are also common words (ඒ "that") or only occur in a chain such as පෙ.ව.,
+# අ.පො.ස. or පා.ම. (MP): they keep their full stop only when another abbreviation follows directly.
+CHAIN_ABBREVIATIONS = ('ඒ.', 'ඕ.', 'පෙ.', 'ව.', 'පා.', 'ම.', 'ප.', 'පූ.', 'අ.', 'පො.', 'ස.', 'උ.', 'සා.')
 
 _SINHALA_LETTERS = f'{chr(0x0D81)}-{chr(0x0DF3)}'  # the Sinhala block without the kunddaliya
 _COMBINING = f'{chr(0x0300)}-{chr(0x036F)}'
@@ -55,9 +57,17 @@ _BULLETS = frozenset(['-', '*', '\N{BULLET}', '\N{WHITE BULLET}', '\N{TRIANGULAR
 _BLANK_LINE = re.compile(r'\n[^\S\n]*\n')
 
 
-def _token_regex(abbreviations: Iterable[str]) -> re.Pattern[str]:
-    forms = sorted({unicodedata.normalize('NFC', a) for a in abbreviations}, key=len, reverse=True)
-    abbreviation = rf'(?<![{_W}])(?:{"|".join(map(re.escape, forms))})+' if forms else r'(?!x)x'
+def _alternatives(forms: Iterable[str]) -> str | None:
+    forms = sorted({unicodedata.normalize('NFC', f) for f in forms}, key=len, reverse=True)
+    return '|'.join(map(re.escape, forms)) or None
+
+
+def _token_regex(abbreviations: Iterable[str], chain_abbreviations: Iterable[str]) -> re.Pattern[str]:
+    alone, chain = tuple(abbreviations), tuple(chain_abbreviations)
+    any_form, alone_form, chain_form = _alternatives(alone + chain), _alternatives(alone), _alternatives(chain)
+    starts = ([f'(?:{alone_form})(?:{any_form})*'] if alone_form else []) + (
+        [f'(?:{chain_form})(?:{any_form})+'] if chain_form else [])
+    abbreviation = rf'(?<![{_W}])(?:{"|".join(starts)})' if starts else r'(?!x)x'
     parts = [f'(?P<{kind}>{abbreviation if pattern is None else pattern})' for kind, pattern in _TOKEN_PATTERNS]
     return re.compile('|'.join(parts))
 
@@ -81,15 +91,19 @@ class RuleTokenizer(Backend):
     """Regex tokenizer. Sets ``attrs['kind']`` on each token: word, number, punct, symbol,
     abbreviation, url, email, mention, hashtag, emoji or other.
 
-    Pass ``abbreviations=`` to replace the abbreviation list, or ``extra_abbreviations=`` to add
-    to it. Runs of the same punctuation mark (``...``, ``!!``) are one token.
+    Pass ``abbreviations=`` or ``chain_abbreviations=`` to replace those lists, or
+    ``extra_abbreviations=`` to add standalone ones. Runs of the same punctuation mark
+    (``...``, ``!!``) are one token.
     """
 
     def __init__(self, abbreviations: Iterable[str] = ABBREVIATIONS,
-                 extra_abbreviations: Iterable[str] = (), **config: Any) -> None:
+                 extra_abbreviations: Iterable[str] = (),
+                 chain_abbreviations: Iterable[str] = CHAIN_ABBREVIATIONS, **config: Any) -> None:
         abbreviations, extra_abbreviations = tuple(abbreviations), tuple(extra_abbreviations)
-        super().__init__(abbreviations=abbreviations, extra_abbreviations=extra_abbreviations, **config)
-        self._regex = _token_regex(abbreviations + extra_abbreviations)
+        chain_abbreviations = tuple(chain_abbreviations)
+        super().__init__(abbreviations=abbreviations, extra_abbreviations=extra_abbreviations,
+                         chain_abbreviations=chain_abbreviations, **config)
+        self._regex = _token_regex(abbreviations + extra_abbreviations, chain_abbreviations)
 
     def __call__(self, doc: Doc) -> Doc:
         doc.set_tokens(Token(m.group(), m.start(), m.end(), {'kind': _kind(m)})

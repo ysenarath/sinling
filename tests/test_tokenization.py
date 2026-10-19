@@ -20,6 +20,8 @@ class TokenizeTest(unittest.TestCase):
             'ඒ.බී. පෙරේරා': ['ඒ.බී.', 'පෙරේරා'],
             f'ක්{ZWJ}රි.පූ. 250': [f'ක්{ZWJ}රි.පූ.', '250'],
             'ගව.': ['ගව', '.'],  # 0.3 kept the full stop: abbreviations now only start a word
+            'රජ ඒ.': ['රජ', 'ඒ', '.'],  # ඒ ("that") is an abbreviation only in a chain such as ඒ.බී.
+            'පා.ම. ඔහු': ['පා.ම.', 'ඔහු'],  # MP: a chain
             'අගය 3.14 යි, 1,000 ක්.': ['අගය', '3.14', 'යි', ',', '1,000', 'ක්', '.'],
             'මට වයස 10.': ['මට', 'වයස', '10', '.'],
             f'ශ්{ZWJ}රී ලංකාව': [f'ශ්{ZWJ}රී', 'ලංකාව'],
@@ -64,6 +66,8 @@ class TokenizeTest(unittest.TestCase):
     def test_abbreviation_options(self):
         self.assertEqual(tokenize('ඩො. සිල්වා', extra_abbreviations=['ඩො.']), ['ඩො.', 'සිල්වා'])
         self.assertEqual(tokenize('රු.10', abbreviations=[]), ['රු', '.', '10'])
+        self.assertEqual(tokenize('ඒ. පෙරේරා', chain_abbreviations=[]), ['ඒ', '.', 'පෙරේරා'])
+        self.assertEqual(tokenize('ඒ.', abbreviations=['ඒ.']), ['ඒ.'])
 
     def test_registered(self):
         self.assertEqual([(b.task, b.name, b.default) for b in sinling.backends() if b.task in ('tokenize', 'sentences')],
