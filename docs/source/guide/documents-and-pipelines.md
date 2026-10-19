@@ -1,7 +1,8 @@
 # Documents and pipelines
 
-Task functions return plain values, which is enough for most scripts. A pipeline runs several
-tasks on one `Doc` and keeps everything they find.
+Functions like `tokenize()` give you a simple list. When you need more, such as the words with
+their positions, the sentences and the stems, use a pipeline. It runs several steps on your text
+and gives you a `Doc` with all the results.
 
 ```python
 >>> import sinling
@@ -10,19 +11,19 @@ tasks on one `Doc` and keeps everything they find.
 
 ```
 
-`sinling.pipeline()` with no steps runs exactly these three. A pipeline builds each backend
-once, so reuse it for many texts.
+`sinling.pipeline()` on its own runs these same three steps. Create a pipeline once and reuse
+it for all your texts; that's faster than creating a new one each time.
 
-## The Doc
+## What's in a Doc
 
 | Attribute | What it holds |
 | --- | --- |
-| `doc.raw` | The text exactly as given. It never changes. |
-| `doc.text` | The working text, after normalization or legacy-font conversion. |
-| `doc.tokens` | A list of `Token`: `text`, `start` and `end` offsets into `doc.text`, and `attrs`. |
-| `doc.sents` | A list of `Span`: `start` and `end` token indices, with an optional `label` and `score`. |
-| `doc.spans` | Named groups of spans, e.g. `doc.spans["ents"]` for named entities. |
-| `doc.meta` | Document-level results, such as unmapped legacy-font glyphs. |
+| `doc.raw` | Your text, exactly as you gave it. |
+| `doc.text` | The text after clean-up or font conversion. |
+| `doc.tokens` | The words and other tokens. Each has its `text`, its `start` and `end` position in `doc.text`, and `attrs` with extra details. |
+| `doc.sents` | The sentences. |
+| `doc.spans` | Other groups of words, such as names of people and places, once Sinling can find them. |
+| `doc.meta` | Notes about the whole text, such as characters an old-font conversion didn't know. |
 
 ```python
 >>> doc.text
@@ -34,11 +35,11 @@ Token(text='යනවා', start=3, end=7, attrs={'kind': 'word'})
 
 ```
 
-## Offsets back to the original
+## Finding results in your original text
 
-Normalization and legacy-font conversion change the text, but every change is recorded.
-`doc.to_raw()` maps a token, a span or a character range in `doc.text` back to `doc.raw`, so
-you can highlight a result in the original document:
+Cleaning up and converting text can change it, but the `Doc` remembers where everything came
+from. `doc.to_raw()` gives the position of a word, a sentence or any stretch of `doc.text` in
+your original text, for example to highlight it:
 
 ```python
 >>> start, end = doc.to_raw(doc.tokens[1])
@@ -47,12 +48,12 @@ you can highlight a result in the original document:
 
 ```
 
-Here the raw text starts with an invisible zero-width space, so every offset moves by one.
+Here the original text starts with an invisible character, so every position moves by one.
 
-## Steps
+## Choosing the steps
 
-A step is a task name (its default backend), a `(task, backend)` or `(task, backend, options)`
-tuple, or a dict with `task`, `backend` and `config` keys:
+Name each step by its task. To choose how a step is done, or to give it options, use a pair or
+a triple:
 
 ```python
 nlp = sinling.pipeline([
@@ -63,14 +64,14 @@ nlp = sinling.pipeline([
 ])
 ```
 
-Steps that change the text (normalization, legacy-font conversion) must come before all
-others; the pipeline refuses another order. Tasks that need tokens, such as `sentences` and
-`stem`, raise an error if `tokenize` hasn't run.
+Steps that change the text, such as clean-up and font conversion, must come first; otherwise you
+get an error. So do steps that need words, such as `sentences` and `stem`, if `tokenize` hasn't
+come before them.
 
 ## Saving a Doc
 
-`doc.to_dict()` returns plain data that can be written as JSON, and `Doc.from_dict()` rebuilds
-the document, alignment included:
+`doc.to_dict()` turns a `Doc` into ordinary dicts and lists that you can save as JSON.
+`Doc.from_dict()` turns them back into a `Doc`, positions included:
 
 ```python
 >>> import json

@@ -1,6 +1,7 @@
 # Migrating from 0.3
 
-Sinling 0.4 is a redesign, and the 0.3 API is gone. If you can't move yet, pin the old version:
+Sinling 0.4 works differently from 0.3, and the 0.3 classes and functions are gone. If you
+can't update your code yet, keep using 0.3:
 
 ```
 pip install "sinling<0.4"
@@ -8,7 +9,7 @@ pip install "sinling<0.4"
 
 ## Where things went
 
-| 0.3 | 0.4 |
+| In 0.3 | In 0.4 |
 | --- | --- |
 | `SinhalaTokenizer().tokenize(sentence)` | `sinling.tokenize(text)` |
 | `SinhalaTokenizer().split_sentences(text)` | `sinling.sentences(text)` |
@@ -20,7 +21,8 @@ pip install "sinling<0.4"
 | `word_splitter.split(word)` | not in 0.4; pin `sinling<0.4` |
 
 0.3's `SinhalaStemmer().stem(word)` returned `(base, suffix)` and used the stem dictionary by
-default. In 0.4 the default backend is `suffix`; to get the 0.3 behaviour for one word:
+default. In 0.4 `stem()` removes endings without the dictionary unless you ask for it. To get
+the 0.3 result for one word:
 
 ```python
 from sinling.registry import get_backend
@@ -33,8 +35,8 @@ stemmer.split("අංකයක්")  # ('අංක', 'යක්')
 
 **Tokenization**
 
-- Strings are normalized before tokenizing. Pass `normalize=False` for 0.3's behaviour.
-- The tokenizer no longer deletes characters. 0.3 removed about 80, including accented Latin
+- Text is cleaned up with `normalize()` before it is split. Pass `normalize=False` to skip that.
+- Splitting no longer deletes characters. 0.3 removed about 80, including accented Latin
   letters such as `é` and `ñ`.
 - Abbreviations keep their full stop only at the start of a word. In 0.3, a sentence ending in
   `ගව.` kept the full stop on the word and never ended.
@@ -50,19 +52,19 @@ stemmer.split("අංකයක්")  # ('අංක', 'යක්')
 
 **Stemming**
 
-- The stemmer's data is downloaded on first use instead of being part of the package. See
+- The stemmer's data is downloaded the first time you use it, instead of coming with the package. See
   [Downloads and offline use](guide/downloads.md).
-- The suffix stemmer gives the same results as 0.3.7 on all 27,206 words tested. The dictionary
-  stemmer differs only for input that isn't in Unicode NFC, which 0.4 normalizes first.
+- Stems are the same as in 0.3.7 for all 27,206 words we tested. With the dictionary, a few
+  dozen words typed in an unusual Unicode form now get cleaned up first.
 
 **Normalization**
 
-- 0.3's `preprocess()` joined `උ` + `ෘ` into `ඌ`, which is wrong; `ඌ` is `උ` + `ෟ`.
-  `normalize()` follows the Unicode Standard.
+- 0.3's `preprocess()` turned `උ` + `ෘ` into `ඌ`, which is wrong; `ඌ` is `උ` + `ෟ`.
+  `normalize()` follows the Unicode standard.
 
 **Packaging**
 
 - Python 3.11 or newer.
-- No dependencies: `nltk`, `scikit-learn-crfsuite`, `joblib`, `pygtrie` and `emoji` are no
-  longer needed.
-- The wheel is about 35 KB instead of 20 MB.
+- Nothing else is installed with it: `nltk`, `scikit-learn-crfsuite`, `joblib`, `pygtrie` and
+  `emoji` are no longer needed.
+- The download is about 35 KB instead of 20 MB.

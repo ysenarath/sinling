@@ -1,12 +1,13 @@
 # ප්ලගිනයක් ලිවීම
 
-Sinling වෙනස් නොකර ඕනෑම පැකේජයකට Sinling කාර්යයකට backend එකක් එක් කළ හැකිය. ඉන්පසු
-පරිශීලකයින් එය `backend=` මගින්, හරියටම ගොඩනැගූ backend එකක් ලෙසම තෝරා ගනී.
+Sinling ට සමහර කාර්ය ක්‍රම එකකට වඩා ගණනකින් කළ හැකි අතර, සෑම ක්‍රමයක්ම backend එකක් ලෙස
+හැඳින්වේ. Sinling වෙනස් නොකර, වෙනම පැකේජයක ඔබේම backend එකක් එක් කළ හැකිය. ඉන්පසු මිනිසුන්
+එය `backend=` මගින්, ගොඩනැගූ ඒවා මෙන්ම තෝරා ගනී.
 
 ## 1. Backend එක ලියන්න {#1-write-the-backend}
 
-Backend එකක් `sinling.Backend` හි උප-පන්තියකි. එහි විකල්ප keyword arguments ලෙස ලැබේ;
-`__call__` එකට `Doc` එකක් ලැබී, එය සටහන් කර, ආපසු ලබා දෙයි.
+Backend එකක් යනු `sinling.Backend` මත පදනම් වූ class එකකි. එහි විකල්ප keyword arguments ලෙස
+ලැබේ. Sinling එය `Doc` එකක් සමඟ කැඳවයි; backend එක තම ප්‍රතිඵල `Doc` එකට එක් කර එය ආපසු දෙයි.
 
 ```python
 # sinling_whitespace/__init__.py
@@ -26,18 +27,18 @@ class WhitespaceTokenizer(Backend):
         return doc
 ```
 
-Backend එකකට කළ හැකි දේ එහි කාර්යය මත රඳා පවතී:
+Backend එක කළ යුතු දේ එහි කාර්යය මත රඳා පවතී:
 
-| කාර්යය | Backend එක කළ යුත්තේ |
+| කාර්යය | Backend එක කරන දේ |
 | --- | --- |
-| `normalize`, `legacy_font` | පෙළ වෙනස් කළ යුත්තේ සම්බන්ධතාව රඳවා ගන්නා `doc.edit_text()` මගින් පමණි. |
-| `tokenize` | ස්ථානවල ඇති `doc.text` සමඟ පෙළ ගැළපෙන ටෝකන සමඟ `doc.set_tokens()` කැඳවන්න. |
-| `sentences` | `doc.sents` ටෝකන දර්ශක span ලෙස සකසන්න. |
-| `stem` | සෑම ටෝකනයකම `attrs["stem"]` සහ `attrs["suffix"]` සකසන්න. |
+| `normalize`, `legacy_font` | පෙළ වෙනස් කරයි, නමුත් `doc.edit_text()` හරහා පමණි; එවිට මුල් පෙළේ ස්ථාන නොනැසී පවතී. |
+| `tokenize` | සොයා ගත් ටෝකන සමඟ `doc.set_tokens()` කැඳවයි. |
+| `sentences` | `doc.sents` සකසයි. |
+| `stem` | සෑම ටෝකනයකම `attrs["stem"]` සහ `attrs["suffix"]` සකසයි. |
 
-## 2. එයට අවශ්‍ය දේ ප්‍රකාශ කරන්න {#2-declare-what-it-needs}
+## 2. එයට අවශ්‍ය දේ දක්වන්න {#2-declare-what-it-needs}
 
-පන්ති ගුණාංග Sinling ට backend එක රඳා පවතින්නේ කුමක් මතදැයි කියයි:
+Backend එකට වෙනත් පැකේජ හෝ දත්ත අවශ්‍ය නම්, එය class එක තුළ දක්වන්න:
 
 ```python
 class TransformerNER(Backend):
@@ -46,22 +47,23 @@ class TransformerNER(Backend):
     resources = ("my-ner-model",)       # resources it downloads on first use
 ```
 
-අවශ්‍ය module එකක් නැති නම්, Sinling `pip install` විධානය සමඟ `MissingDependencyError` මතු
-කරයි. බාගත හැකි ගොනු `sinling.resources.register_resource()` මගින්, අනුවාදයට සහ SHA-256 ට
-සවි කර ලියාපදිංචි කර, `sinling.resources.resource_path()` මගින් පූරණය කරන්න.
+එයට අවශ්‍ය පැකේජයක් ස්ථාපනය කර නැති නම්, එය නිවැරදි කිරීමට අවශ්‍ය `pip install` විධානය සමඟ
+පරිශීලකයාට දෝෂයක් ලැබේ. පළමු භාවිතයේදී දත්ත ගොනු බාගැනීමට, ඒවා
+`sinling.resources.register_resource()` මගින් ලියාපදිංචි කර `sinling.resources.resource_path()`
+මගින් විවෘත කරන්න.
 
 ## 3. එය ලියාපදිංචි කරන්න {#3-register-it}
 
-ප්ලගිනයේ `pyproject.toml` වෙත entry point එකක් එක් කරන්න. නාමය `<task>.<backend>` වේ:
+ඔබේ පැකේජයේ `pyproject.toml` හි backend එක ගැන Sinling ට කියන්න. නාමය `<task>.<backend>` වේ:
 
 ```toml
 [project.entry-points."sinling.backends"]
 "tokenize.whitespace" = "sinling_whitespace:WhitespaceTokenizer"
 ```
 
-Backend එකක් පළමු වරට සොයන විට Sinling entry points කියවයි, නමුත් ප්ලගිනය import කරන්නේ එහි
-backend එකක් භාවිත කරන විට පමණි; ඒ නිසා ස්ථාපිත ප්ලගිනයක් එතෙක් කිසිදු වියදමක් නොකරයි. සම්මතය
-ලෙස, ප්ලගින PyPI හි `sinling-<name>` ලෙස ප්‍රකාශයට පත් කරන්න.
+ප්ලගිනයක් ස්ථාපනය කිරීම Sinling මන්දගාමී නොකරයි: ප්ලගිනය පූරණය වන්නේ යමෙක් එය භාවිත කරන විට
+පමණි. කරුණාකර ප්ලගින PyPI හි `sinling-whitespace` වැනි, `sinling-` වලින් ආරම්භ වන නාමයකින්
+ප්‍රකාශයට පත් කරන්න.
 
 ## 4. එය භාවිත කර ඇගයීම {#4-use-and-evaluate-it}
 
@@ -70,5 +72,4 @@ sinling.tokenize("මම ගෙදර යනවා.", backend="whitespace")
 sinling.evaluate("tokenize", "ud-sinhala-stb", backend="whitespace")
 ```
 
-`sinling.backends("tokenize")` එය ගොඩනැගූ backends අසලින් ලැයිස්තුගත කරයි. පළමු භාවිතයට පෙර,
-එහි විස්තර (extra, බාගැනීම්, ලබා ගත හැකි බව) `None` ලෙස පෙන්වයි.
+`sinling.backends("tokenize")` එය ගොඩනැගූ backends අසලින් ලැයිස්තුගත කරයි.

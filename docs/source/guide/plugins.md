@@ -1,12 +1,13 @@
 # Writing a plugin
 
-Any package can add a backend to a Sinling task without changing Sinling. Users then choose it
-with `backend=`, exactly like a built-in one.
+Sinling can do some tasks in more than one way, and each way is called a backend. You can add
+your own backend in a separate package, without changing Sinling. People then choose it with
+`backend=`, just like the built-in ones.
 
 ## 1. Write the backend
 
-A backend subclasses `sinling.Backend`. Its options arrive as keyword arguments, and
-`__call__` receives a `Doc`, annotates it and returns it.
+A backend is a class based on `sinling.Backend`. Its options arrive as keyword arguments.
+Sinling calls it with a `Doc`; the backend adds its results to the `Doc` and returns it.
 
 ```python
 # sinling_whitespace/__init__.py
@@ -26,18 +27,18 @@ class WhitespaceTokenizer(Backend):
         return doc
 ```
 
-What a backend may do depends on its task:
+What the backend has to do depends on its task:
 
-| Task | The backend must |
+| Task | What the backend does |
 | --- | --- |
-| `normalize`, `legacy_font` | Change the text only through `doc.edit_text()`, which keeps the alignment. |
-| `tokenize` | Call `doc.set_tokens()` with tokens whose text matches `doc.text` at their offsets. |
-| `sentences` | Set `doc.sents` to spans of token indices. |
-| `stem` | Set `attrs["stem"]` and `attrs["suffix"]` on each token. |
+| `normalize`, `legacy_font` | Changes the text, but only through `doc.edit_text()`, so positions in the original text stay known. |
+| `tokenize` | Calls `doc.set_tokens()` with the tokens it found. |
+| `sentences` | Sets `doc.sents`. |
+| `stem` | Sets `attrs["stem"]` and `attrs["suffix"]` on each token. |
 
 ## 2. Declare what it needs
 
-Class attributes tell Sinling what the backend depends on:
+If the backend needs other packages or data, say so in the class:
 
 ```python
 class TransformerNER(Backend):
@@ -46,22 +47,22 @@ class TransformerNER(Backend):
     resources = ("my-ner-model",)       # resources it downloads on first use
 ```
 
-If a required module is missing, Sinling raises `MissingDependencyError` with the
-`pip install` command. Register downloadable files with `sinling.resources.register_resource()`,
-pinned by version and SHA-256, and load them with `sinling.resources.resource_path()`.
+If a package it needs isn't installed, the user gets an error with the `pip install` command
+to fix it. To download data files on first use, register them with
+`sinling.resources.register_resource()` and open them with `sinling.resources.resource_path()`.
 
 ## 3. Register it
 
-Add an entry point to the plugin's `pyproject.toml`. The name is `<task>.<backend>`:
+Tell Sinling about the backend in your package's `pyproject.toml`. The name is
+`<task>.<backend>`:
 
 ```toml
 [project.entry-points."sinling.backends"]
 "tokenize.whitespace" = "sinling_whitespace:WhitespaceTokenizer"
 ```
 
-Sinling reads entry points the first time a backend is looked up, but imports the plugin only
-when one of its backends is used, so an installed plugin costs nothing until then. By
-convention, publish plugins on PyPI as `sinling-<name>`.
+Installing a plugin doesn't slow Sinling down: the plugin is loaded only when someone uses it.
+Please publish plugins on PyPI with a name starting `sinling-`, such as `sinling-whitespace`.
 
 ## 4. Use and evaluate it
 
@@ -70,5 +71,4 @@ sinling.tokenize("මම ගෙදර යනවා.", backend="whitespace")
 sinling.evaluate("tokenize", "ud-sinhala-stb", backend="whitespace")
 ```
 
-`sinling.backends("tokenize")` lists it next to the built-in backends. Before it is first
-used, its details (extra, downloads, availability) show as `None`.
+`sinling.backends("tokenize")` lists it next to the built-in backends.
