@@ -141,3 +141,9 @@ cython_debug/
 .idea/
 notebooks/Sinhala-POS-Data/
 .DS_Store
+
+# AI agent files
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
