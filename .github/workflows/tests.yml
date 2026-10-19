@@ -29,3 +29,5 @@ jobs:
     - name: Run tests
       # -P keeps the checkout off sys.path, so the tests import the installed package
       run: python -P -m unittest discover -s tests -t tests -v
+      env:
+        SINLING_NETWORK_TESTS: '1'  # also download the real resources and check them

@@ -15,7 +15,7 @@ from sinling.doc import Doc, Span, Token
 from sinling.errors import DocError
 from sinling.registry import Backend, define_task, get_backend, register, run_task
 
-__all__ = ['ABBREVIATIONS', 'RuleSentenceSplitter', 'RuleTokenizer', 'sentences', 'tokenize']
+__all__ = ['ABBREVIATIONS', 'RuleSentenceSplitter', 'RuleTokenizer', 'sentences', 'tokenize', 'tokenized']
 
 # Abbreviations that keep their full stop. Most come from 0.3; the rest are common in Sinhala
 # writing: ප.ව. (p.m.), ක්රි.පූ. (BC), අ.පො.ස. (G.C.E.), උ.පෙ. and සා.පෙ. (A/L and O/L).
@@ -160,9 +160,14 @@ def tokenize(text: str | Doc, *, backend: str | None = None, normalize: bool = T
     return run_task('tokenize', _prepare(text, normalize), backend, **config)
 
 
-def sentences(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **config: Any) -> list[str]:
-    """Split text into sentences, tokenizing it first if needed."""
+def tokenized(text: str | Doc, normalize: bool = True) -> Doc:
+    """Return ``text`` as a tokenized Doc, normalizing and tokenizing with the default backends."""
     doc = _prepare(text, normalize)
     if not doc.is_tokenized:
         get_backend('tokenize')(doc)
-    return run_task('sentences', doc, backend, **config)
+    return doc
+
+
+def sentences(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **config: Any) -> list[str]:
+    """Split text into sentences, tokenizing it first if needed."""
+    return run_task('sentences', tokenized(text, normalize), backend, **config)

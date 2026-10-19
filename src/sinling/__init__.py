@@ -20,6 +20,7 @@ from sinling.resources import Resource, download, register_resource, resource_pa
 from sinling.normalization import normalize
 from sinling.script import aksharas
 from sinling.tokenization import sentences, tokenize
+from sinling.stemming import stem
 
 try:
     __version__ = version('sinling')
@@ -29,7 +30,7 @@ except PackageNotFoundError:  # imported from a source checkout without installi
 __all__ = [
     'Backend', 'BackendInfo', 'Doc', 'Pipeline', 'Resource', 'Span', 'Task', 'Token',
     'aksharas', 'backends', 'define_task', 'download', 'get_backend', 'normalize', 'pipeline', 'register',
-    'sentences', 'tokenize',
+    'sentences', 'stem', 'tokenize',
     'register_resource', 'resource_path', 'run_task',
     'DocError', 'MissingDependencyError', 'PipelineError', 'ResourceIntegrityError',
     'ResourceUnavailableError', 'SinlingError', 'UnknownBackendError', 'UnknownResourceError',

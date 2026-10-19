@@ -89,6 +89,24 @@ A sentence ends after `.` `?` `!` `…` or the kunddaliya `෴`, at a blank line
 list item. A number and full stop at the start of a line (`1.`) is a list marker, not a
 sentence end.
 
+## Stemming
+
+```python
+sinling.stem("පොත්වලින් කියවන්න.")                         # ['පොත', 'කියව', '.']
+sinling.stem("පිහිටවීමට", backend="dictionary")            # ['පිහිටවීම']
+```
+
+The default `suffix` backend strips the longest known suffix. The `dictionary` backend looks
+words up in a 27,197-word stem dictionary first. Only word tokens are stemmed; in a pipeline,
+each token also gets `attrs["stem"]` and `attrs["suffix"]`.
+
+The stemmer and its data come from the
+[sinhala-stemmer](https://github.com/rksk/sinhala-news-analysis/tree/master/sinhala-stemmer)
+of the Sinhala News Analysis project; please cite it if you use them. Its repository has no
+licence, so Sinling does not ship the data: the suffix list (6 KB) and the stem dictionary
+(1.3 MB) are downloaded from that repository on first use, pinned to one commit and checked
+against a SHA-256 checksum.
+
 ## Documents, pipelines and offsets
 
 Task functions such as `normalize()` return plain values. To run several steps and keep
@@ -131,10 +149,17 @@ A plugin is imported only when one of its backends is first used.
 
 ## Resources and offline use
 
-Larger models and dictionaries will be downloaded on first use, checked against a SHA-256
-checksum and cached in `~/.cache/sinling`. Set `SINLING_HOME` to use another directory, and
-`SINLING_OFFLINE=1` to forbid downloads. Fetch a resource ahead of time with
-`sinling.download(name)`. No resources are published yet.
+Models and dictionaries are downloaded on first use, checked against a SHA-256 checksum and
+cached in `~/.cache/sinling`. Set `SINLING_HOME` to use another directory, and
+`SINLING_OFFLINE=1` to forbid downloads. To prepare an offline machine, fetch what you need on a
+connected one and copy the cache directory over:
+
+```python
+sinling.download("sinhala-suffixes")         # for the suffix stemmer
+sinling.download("sinhala-stem-dictionary")  # for the dictionary stemmer
+```
+
+`normalize`, `tokenize` and `sentences` need no downloads.
 
 ## Roadmap
 
