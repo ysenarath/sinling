@@ -132,7 +132,8 @@ counted in `doc.meta["legacy_font_unmapped"]`. DL fonts and Tamil legacy fonts a
 ## Documents, pipelines and offsets
 
 Task functions such as `normalize()` return plain values. To run several steps and keep
-everything, use a pipeline, which returns a `Doc`. A `Doc` keeps the original text, the working
+everything, use a pipeline, which returns a `Doc`. `sinling.pipeline()` with no steps runs
+normalize, tokenize and sentences. A `Doc` keeps the original text, the working
 text and an alignment between them, so any result can be traced back to the input:
 
 ```python
@@ -167,7 +168,10 @@ entry-point group. By convention they are published as `sinling-<name>`:
 "normalize.mybackend" = "sinling_mybackend:MyNormalizer"
 ```
 
-A plugin is imported only when one of its backends is first used.
+A plugin is imported only when one of its backends is first used. Plugin authors subclass
+`sinling.Backend` and find the rest of the registry in `sinling.registry`. `sinling.backends()`
+also lists what each backend downloads on first use; an empty list means it works offline from
+the start.
 
 ## Resources and offline use
 

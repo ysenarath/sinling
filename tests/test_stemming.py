@@ -83,9 +83,10 @@ class ResourceTest(unittest.TestCase):
             self.assertIn('/rksk/sinhala-news-analysis/05e7076caa76bfe490f93d221c4aac88c1d01600/', resource.url)
             self.assertEqual(len(resource.sha256), 64)
 
-    def test_listed_as_online_backends(self):
-        info = {b.name: (b.default, b.offline) for b in sinling.backends('stem')}
-        self.assertEqual(info, {'dictionary': (False, False), 'suffix': (True, False)})
+    def test_backends_list_their_downloads(self):
+        info = {b.name: (b.default, b.downloads) for b in sinling.backends('stem')}
+        self.assertEqual(info, {'dictionary': (False, ('sinhala-suffixes', 'sinhala-stem-dictionary')),
+                                'suffix': (True, ('sinhala-suffixes',))})
 
 
 @unittest.skipUnless(os.environ.get('SINLING_NETWORK_TESTS') == '1', 'set SINLING_NETWORK_TESTS=1 to download')

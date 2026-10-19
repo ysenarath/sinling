@@ -97,9 +97,10 @@ class Doc:
         sources.extend((i, i + 1) for i in range(pos, len(old)))
         starts = [s for s, _ in sources] + [len(old)]
         ends = [0] + [e for _, e in sources]
-        if self._starts is not None:
-            starts = [self._starts[b] for b in starts]
-            ends = [self._ends[b] for b in ends]
+        if self._starts is not None and self._ends is not None:
+            old_starts, old_ends = self._starts, self._ends
+            starts = [old_starts[b] for b in starts]
+            ends = [old_ends[b] for b in ends]
         self._text = ''.join(pieces)
         self._starts, self._ends = starts, ends
 
@@ -115,7 +116,7 @@ class Doc:
                 raise TypeError('to_raw(start, end) needs an end offset')
         if not 0 <= start <= end <= len(self._text):
             raise DocError(f'range ({start}, {end}) is outside the text (length {len(self._text)})')
-        if self._starts is None:
+        if self._starts is None or self._ends is None:
             return start, end
         raw_start, raw_end = self._starts[start], self._ends[end]
         return raw_start, max(raw_start, raw_end)

@@ -10,12 +10,10 @@ from sinling import (
     UnknownBackendError,
     UnknownTaskError,
     backends,
-    define_task,
-    get_backend,
     register,
-    run_task,
+    registry,
 )
-from sinling import registry
+from sinling.registry import define_task, get_backend, run_task
 
 from helpers import RegistryTestCase
 
@@ -140,7 +138,7 @@ class PluginTest(RegistryTestCase):
         self.assertEqual(run_task('upper', 'ab', backend='shout'), 'ab!')
         info = [b for b in backends('upper') if b.name == 'shout'][0]
         self.assertTrue(info.available)
-        self.assertTrue(info.offline)
+        self.assertEqual(info.downloads, ())
 
     def test_plugin_must_be_a_backend(self):
         self.use_plugins(('upper.bad', 'fake_plugin:NotABackend'))

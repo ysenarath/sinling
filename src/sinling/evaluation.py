@@ -183,14 +183,14 @@ def evaluate(task: str, dataset: str | Path, backend: str | None = None, *, text
     else:
         splitter = get_backend('sentences', backend, **config)
         raw = ' '.join(prepare(s.text) for s in sentences)
-        gold, pos = set(), 0
+        gold_ends, pos = set(), 0
         for sentence in sentences:
             pos += len(prepare(sentence.text))
-            gold.add(pos)
+            gold_ends.add(pos)
             pos += 1
         doc = splitter(tokenizer(normalizer(Doc(raw))))
-        predicted = {doc.to_raw(span)[1] for span in doc.sents}
-        gold_n, predicted_n, correct = len(gold), len(predicted), len(predicted & gold)
+        predicted_ends = {doc.to_raw(span)[1] for span in doc.sents}
+        gold_n, predicted_n, correct = len(gold_ends), len(predicted_ends), len(predicted_ends & gold_ends)
 
     scored = tokenizer if task == 'tokenize' else splitter
     precision, recall, f1 = _score(gold_n, predicted_n, correct)

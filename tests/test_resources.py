@@ -6,15 +6,13 @@ from pathlib import Path
 from unittest import mock
 
 from sinling import (
-    Resource,
     ResourceIntegrityError,
     ResourceUnavailableError,
     UnknownResourceError,
     download,
-    register_resource,
-    resource_path,
+    resources,
 )
-from sinling import resources
+from sinling.resources import Resource, register_resource, resource_path
 
 CONTENT = 'ගෙදර\tගෙදර\n'.encode()
 

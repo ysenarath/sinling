@@ -2,8 +2,8 @@
 
 import unittest
 
-from sinling import Backend, Doc, Token, define_task, register
-from sinling import registry
+from sinling import Backend, Doc, Token, register, registry
+from sinling.registry import define_task
 
 
 class Upper(Backend):

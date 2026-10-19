@@ -1,4 +1,9 @@
-"""Sinling: a language processing toolkit for Sinhala."""
+"""Sinling: a language processing toolkit for Sinhala.
+
+The top level holds the user API: task functions, the document classes, pipelines and errors.
+Plugin authors find ``define_task``, ``get_backend`` and ``run_task`` in ``sinling.registry``, and
+``Resource`` and ``register_resource`` in ``sinling.resources``.
+"""
 
 from importlib.metadata import PackageNotFoundError, version
 
@@ -15,8 +20,8 @@ from sinling.errors import (
     UnknownTaskError,
 )
 from sinling.pipeline import Pipeline, pipeline
-from sinling.registry import Backend, BackendInfo, Task, backends, define_task, get_backend, register, run_task
-from sinling.resources import Resource, download, register_resource, resource_path
+from sinling.registry import Backend, backends, register
+from sinling.resources import download
 from sinling.normalization import normalize
 from sinling.script import aksharas
 from sinling.tokenization import sentences, tokenize
@@ -30,10 +35,13 @@ except PackageNotFoundError:  # imported from a source checkout without installi
     __version__ = '0+unknown'
 
 __all__ = [
-    'Backend', 'BackendInfo', 'Doc', 'Pipeline', 'Resource', 'Span', 'Task', 'Token',
-    'aksharas', 'backends', 'define_task', 'download', 'evaluate', 'from_legacy_font', 'get_backend', 'normalize', 'pipeline', 'register',
-    'sentences', 'stem', 'tokenize',
-    'register_resource', 'resource_path', 'run_task',
+    # tasks
+    'aksharas', 'from_legacy_font', 'normalize', 'sentences', 'stem', 'tokenize',
+    # documents and pipelines
+    'Doc', 'Pipeline', 'Span', 'Token', 'pipeline',
+    # backends, resources and evaluation
+    'Backend', 'backends', 'download', 'evaluate', 'register',
+    # errors
     'DocError', 'MissingDependencyError', 'PipelineError', 'ResourceIntegrityError',
     'ResourceUnavailableError', 'SinlingError', 'UnknownBackendError', 'UnknownResourceError',
     'UnknownTaskError',

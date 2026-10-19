@@ -12,7 +12,7 @@ from __future__ import annotations
 import unicodedata
 from functools import lru_cache
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 from sinling.doc import Doc
 from sinling.errors import DocError
@@ -78,8 +78,7 @@ class SuffixStemmer(Backend):
     ``attrs['suffix']`` on every token. A word that is itself a suffix is never emptied.
     """
 
-    offline = False  # downloads its suffix list on first use
-    resources = ('sinhala-suffixes',)
+    resources: ClassVar[tuple[str, ...]] = ('sinhala-suffixes',)
 
     def __init__(self, **config: Any) -> None:
         super().__init__(**config)
@@ -131,6 +130,7 @@ class DictionaryStemmer(SuffixStemmer):
         return stem, ''
 
 
-def stem(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **config: Any) -> list[str]:
+def stem(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **options: Any) -> list[str]:
     """Return the stem of each token, tokenizing (and normalizing) a string first."""
-    return run_task('stem', tokenized(text, normalize), backend, **config)
+    stems: list[str] = run_task('stem', tokenized(text, normalize), backend, **options)
+    return stems

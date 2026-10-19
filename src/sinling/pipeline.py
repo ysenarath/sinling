@@ -9,7 +9,9 @@ from sinling.doc import Doc
 from sinling.errors import PipelineError
 from sinling.registry import Backend, Task, _call, get_backend, get_task
 
-__all__ = ['Pipeline', 'pipeline']
+__all__ = ['DEFAULT_STEPS', 'Pipeline', 'pipeline']
+
+DEFAULT_STEPS = ('normalize', 'tokenize', 'sentences')
 
 StepSpec = str | tuple[str, str] | tuple[str, str, dict[str, Any]] | dict[str, Any]
 
@@ -19,10 +21,12 @@ class Pipeline:
 
     Each step is a task name (default backend), a ``(task, backend)`` or
     ``(task, backend, config)`` tuple, or a dict with ``task`` and optional ``backend``
-    and ``config`` keys. Steps that change the text must come before all other steps.
+    and ``config`` keys. Steps that change the text must come before all other steps. With no
+    steps, the pipeline runs ``DEFAULT_STEPS``: normalize, tokenize and sentences.
     """
 
-    def __init__(self, steps: Iterable[StepSpec]) -> None:
+    def __init__(self, steps: Iterable[StepSpec] | None = None) -> None:
+        steps = DEFAULT_STEPS if steps is None else steps
         self.steps: list[tuple[Task, Backend]] = []
         first_fixed: str | None = None  # first step that needs the text to stay unchanged
         for i, spec in enumerate(steps):
@@ -46,8 +50,11 @@ class Pipeline:
         return f'Pipeline([{steps}])'
 
 
-def pipeline(steps: Iterable[StepSpec]) -> Pipeline:
-    """Build a :class:`Pipeline`, e.g. ``sinling.pipeline(['normalize', 'tokenize'])``."""
+def pipeline(steps: Iterable[StepSpec] | None = None) -> Pipeline:
+    """Build a :class:`Pipeline`, e.g. ``sinling.pipeline(['normalize', 'tokenize'])``.
+
+    ``sinling.pipeline()`` runs the default steps: normalize, tokenize and sentences.
+    """
     return Pipeline(steps)
 
 

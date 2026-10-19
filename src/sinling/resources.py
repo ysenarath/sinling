@@ -17,7 +17,7 @@ from pathlib import Path
 
 from sinling.errors import ResourceIntegrityError, ResourceUnavailableError, UnknownResourceError
 
-__all__ = ['Resource', 'cache_dir', 'download', 'is_offline', 'register_resource', 'resource_path', 'resources']
+__all__ = ['Resource', 'cache_dir', 'download', 'is_offline', 'list_resources', 'register_resource', 'resource_path']
 
 _ALLOWED_SCHEMES = {'https', 'file'}
 _CHUNK = 1 << 20
@@ -61,7 +61,7 @@ def register_resource(resource: Resource) -> Resource:
     return resource
 
 
-def resources() -> list[Resource]:
+def list_resources() -> list[Resource]:
     return sorted(_resources.values(), key=lambda r: r.name)
 
 

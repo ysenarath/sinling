@@ -61,8 +61,8 @@ class FMConverterTest(unittest.TestCase):
             self.assertFalse(is_fm_font(name), name)
 
     def test_registered(self):
-        info = [(b.name, b.default, b.offline) for b in sinling.backends('legacy_font')]
-        self.assertEqual(info, [('fm', True, True)])
+        info = [(b.name, b.default, b.downloads) for b in sinling.backends('legacy_font')]
+        self.assertEqual(info, [('fm', True, ())])
 
 
 if __name__ == '__main__':

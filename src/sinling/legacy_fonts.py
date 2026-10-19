@@ -102,13 +102,13 @@ class FMConverter(Backend):
         return doc
 
 
-def from_legacy_font(text: str | Doc, font: str = 'fm', *, normalize: bool = True, **config: Any) -> str:
+def from_legacy_font(text: str | Doc, *, backend: str = 'fm', normalize: bool = True, **options: Any) -> str:
     """Convert text typed in a legacy font to Unicode, then normalize it unless ``normalize=False``.
 
-    ``font`` names the backend, i.e. the font family: ``'fm'`` for the FM fonts.
+    The backend is the font family: ``'fm'`` for the FM fonts.
     """
     doc = text if isinstance(text, Doc) else Doc(text)
-    get_backend('legacy_font', font, **config)(doc)
+    get_backend('legacy_font', backend, **options)(doc)
     if normalize:
         get_backend('normalize')(doc)
     return doc.text

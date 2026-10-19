@@ -45,8 +45,8 @@ class Backend:
     """Base class for backends. Subclasses annotate a :class:`Doc` in ``__call__``.
 
     Class attributes describe the backend: the optional-dependency ``extra`` that installs
-    what it ``requires`` (importable module names), the ``resources`` it downloads, and
-    whether it runs ``offline``.
+    what it ``requires`` (importable module names), and the ``resources`` it downloads on
+    first use (none means it works without any download).
     """
 
     task: ClassVar[str] = ''
@@ -54,7 +54,6 @@ class Backend:
     extra: ClassVar[str | None] = None
     requires: ClassVar[tuple[str, ...]] = ()
     resources: ClassVar[tuple[str, ...]] = ()
-    offline: ClassVar[bool] = True
 
     def __init__(self, **config: Any) -> None:
         self.config = config
@@ -67,7 +66,9 @@ class Backend:
 class BackendInfo:
     """What :func:`backends` reports about a backend.
 
-    For a plugin that hasn't been loaded yet, ``extra``, ``offline`` and ``available`` are None.
+    ``downloads`` names the resources fetched on first use; an empty tuple means the backend
+    works without any download. For a plugin that hasn't been loaded yet, ``extra``,
+    ``downloads`` and ``available`` are None.
     """
 
     task: str
@@ -75,7 +76,7 @@ class BackendInfo:
     default: bool
     source: str
     extra: str | None
-    offline: bool | None
+    downloads: tuple[str, ...] | None
     available: bool | None
 
 
@@ -238,5 +239,5 @@ def backends(task: str | None = None) -> list[BackendInfo]:
             infos.append(BackendInfo(t, name, default, source, None, None, None))
             continue
         available = all(importlib.util.find_spec(m) is not None for m in cls.requires)
-        infos.append(BackendInfo(t, name, default, _registry.sources[key], cls.extra, cls.offline, available))
+        infos.append(BackendInfo(t, name, default, _registry.sources[key], cls.extra, tuple(cls.resources), available))
     return infos

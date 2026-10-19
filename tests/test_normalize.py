@@ -34,13 +34,13 @@ class GoldenCasesTest(unittest.TestCase):
     def test_expected_output(self):
         for case in CASES:
             with self.subTest(note=case['note']):
-                self.assertEqual(normalize(case['input'], case['preset']), case['expected'])
+                self.assertEqual(normalize(case['input'], preset=case['preset']), case['expected'])
 
     def test_idempotent(self):
         for case in CASES:
             with self.subTest(note=case['note']):
-                once = normalize(case['input'], case['preset'])
-                self.assertEqual(normalize(once, case['preset']), once)
+                once = normalize(case['input'], preset=case['preset'])
+                self.assertEqual(normalize(once, preset=case['preset']), once)
 
     def test_alignment_is_monotonic_and_in_bounds(self):
         for case in CASES:
@@ -71,7 +71,7 @@ class RandomTextTest(unittest.TestCase):
             for preset in ('standard', 'search'):
                 doc = pipeline([('normalize', 'rules', {'preset': preset})])(text)
                 with self.subTest(text=text, preset=preset):
-                    self.assertEqual(normalize(doc.text, preset), doc.text)
+                    self.assertEqual(normalize(doc.text, preset=preset), doc.text)
                     starts = [doc.to_raw(i, len(doc.text))[0] for i in range(len(doc.text) + 1)]
                     self.assertEqual(starts, sorted(starts))
 
@@ -87,7 +87,7 @@ class OptionsTest(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'unknown normalize option'):
             normalize('x', zwnj='strip')
         with self.assertRaisesRegex(ValueError, 'unknown preset'):
-            normalize('x', 'display')
+            normalize('x', preset='display')
         with self.assertRaisesRegex(ValueError, 'canonical, strip, keep'):
             normalize('x', zwj='remove')
 
@@ -99,7 +99,7 @@ class OptionsTest(unittest.TestCase):
 
     def test_registered_as_default_backend(self):
         info = sinling.backends('normalize')
-        self.assertEqual([(b.name, b.default, b.offline) for b in info], [('rules', True, True)])
+        self.assertEqual([(b.name, b.default, b.downloads) for b in info], [('rules', True, ())])
 
     def test_offsets_map_back_through_normalization(self):
         doc = pipeline(['normalize'])('\u200bමම\u00a0\u00a0\u0dd9ගදර')

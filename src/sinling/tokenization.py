@@ -170,9 +170,10 @@ def _prepare(text: str | Doc, normalize: bool) -> Doc:
     return get_backend('normalize')(doc) if normalize else doc
 
 
-def tokenize(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **config: Any) -> list[str]:
+def tokenize(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **options: Any) -> list[str]:
     """Split text into tokens. A string is normalized first unless ``normalize=False``."""
-    return run_task('tokenize', _prepare(text, normalize), backend, **config)
+    tokens: list[str] = run_task('tokenize', _prepare(text, normalize), backend, **options)
+    return tokens
 
 
 def tokenized(text: str | Doc, normalize: bool = True) -> Doc:
@@ -183,6 +184,7 @@ def tokenized(text: str | Doc, normalize: bool = True) -> Doc:
     return doc
 
 
-def sentences(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **config: Any) -> list[str]:
+def sentences(text: str | Doc, *, backend: str | None = None, normalize: bool = True, **options: Any) -> list[str]:
     """Split text into sentences, tokenizing it first if needed."""
-    return run_task('sentences', tokenized(text, normalize), backend, **config)
+    result: list[str] = run_task('sentences', tokenized(text, normalize), backend, **options)
+    return result

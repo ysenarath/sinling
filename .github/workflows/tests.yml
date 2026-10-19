@@ -31,3 +31,17 @@ jobs:
       run: python -P -m unittest discover -s tests -t tests -v
       env:
         SINLING_NETWORK_TESTS: '1'  # also download the real resources and check them
+
+  types:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: '3.11'
+    - name: Type-check
+      run: |
+        python -m pip install mypy==1.18.2
+        mypy --strict --python-version 3.11 src/sinling

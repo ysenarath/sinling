@@ -195,7 +195,7 @@ define_task('normalize', lambda doc: doc.text, changes_text=True,
 
 @register('normalize', 'rules', default=True)
 class RuleNormalizer(Backend):
-    """Rule-based normalizer. Pure Python, offline."""
+    """Rule-based normalizer. Pure Python; needs no download."""
 
     def __init__(self, preset: str = 'standard', **options: Any) -> None:
         super().__init__(preset=preset, **options)
@@ -215,10 +215,11 @@ class RuleNormalizer(Backend):
         return doc
 
 
-def normalize(text: str | Doc, preset: str = 'standard', *, backend: str | None = None, **options: Any) -> str:
+def normalize(text: str | Doc, *, preset: str = 'standard', backend: str | None = None, **options: Any) -> str:
     """Return ``text`` in canonical Unicode form.
 
     ``preset='standard'`` is safe for display and storage; ``preset='search'`` also strips
     ZWJ so that spelling variants match. Override single rules by name, e.g. ``zwj='keep'``.
     """
-    return run_task('normalize', text, backend, preset=preset, **options)
+    result: str = run_task('normalize', text, backend, preset=preset, **options)
+    return result
