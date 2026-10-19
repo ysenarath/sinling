@@ -27,6 +27,7 @@ theme:
 
 markdown_extensions:
   - admonition
+  - attr_list
   - tables
   - toc:
       permalink: true
@@ -35,6 +36,33 @@ markdown_extensions:
 
 plugins:
   - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: si
+          name: සිංහල
+          build: true
+          nav_translations:
+            Home: මුල් පිටුව
+            Guide: මාර්ගෝපදේශය
+            Normalization: සාමාන්‍යකරණය
+            Tokens and sentences: ටෝකන සහ වාක්‍ය
+            Stemming: ප්‍රකෘති සෙවීම
+            Legacy fonts: පැරණි අකුරු
+            Documents and pipelines: ලේඛන සහ නල මාර්ග
+            Downloads and offline use: බාගැනීම් සහ නොබැඳි භාවිතය
+            Evaluation: ඇගයීම
+            Writing a plugin: ප්ලගිනයක් ලිවීම
+            Migrating from 0.3: 0.3 සිට මාරු වීම
+            API reference: API සඳහන
+  - autorefs:
+      resolve_closest: true  # the same API anchors exist in each language
   - mkdocstrings:
       handlers:
         python:
