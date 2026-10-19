@@ -68,6 +68,27 @@ True
 The options are `invisible`, `zwj` (`"canonical"`, `"strip"` or `"keep"`), `doubled_signs`,
 `reorder`, `vowel_letters`, `nfc` and `whitespace` (`"collapse"` or `"keep"`).
 
+## Tokens and sentences
+
+```python
+>>> sinling.tokenize("පෙ.ව. 10ට රු.500ක් ගෙවන්න.")
+['පෙ.ව.', '10ට', 'රු.', '500ක්', 'ගෙවන්න', '.']
+
+>>> sinling.sentences('ඔහු කීවේ "මම එනවා." ඊට පසු ගියේය.')
+['ඔහු කීවේ "මම එනවා."', 'ඊට පසු ගියේය.']
+
+```
+
+Strings are normalized before tokenizing; pass `normalize=False` to skip that. Tokenizing never
+changes the text. Each token records its kind in `token.attrs["kind"]`: `word`, `number`,
+`punct`, `symbol`, `abbreviation`, `url`, `email`, `mention`, `hashtag`, `emoji` or `other`.
+Known abbreviations such as `පෙ.ව.` and `රු.` keep their full stop; add your own with
+`extra_abbreviations=[...]`.
+
+A sentence ends after `.` `?` `!` `…` or the kunddaliya `෴`, at a blank line, and before a
+list item. A number and full stop at the start of a line (`1.`) is a list marker, not a
+sentence end.
+
 ## Documents, pipelines and offsets
 
 Task functions such as `normalize()` return plain values. To run several steps and keep
