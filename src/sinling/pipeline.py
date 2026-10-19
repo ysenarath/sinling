@@ -51,7 +51,7 @@ class Pipeline:
 
 
 def pipeline(steps: Iterable[StepSpec] | None = None) -> Pipeline:
-    """Build a :class:`Pipeline`, e.g. ``sinling.pipeline(['normalize', 'tokenize'])``.
+    """Build a `Pipeline`, e.g. ``sinling.pipeline(['normalize', 'tokenize'])``.
 
     ``sinling.pipeline()`` runs the default steps: normalize, tokenize and sentences.
     """

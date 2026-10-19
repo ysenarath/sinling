@@ -36,8 +36,8 @@ class Doc:
 
     ``raw`` is the text exactly as given and never changes. ``text`` is the working text:
     components that run before tokenization (e.g. normalization) may change it through
-    :meth:`edit_text`, which keeps an alignment so that any offset in ``text`` can be
-    mapped back to ``raw`` with :meth:`to_raw`.
+    `edit_text()`, which keeps an alignment so that any offset in ``text`` can be
+    mapped back to ``raw`` with `to_raw()`.
     """
 
     def __init__(self, raw: str) -> None:
@@ -147,7 +147,7 @@ class Doc:
         return self.tokens[span.start].start, self.tokens[span.end - 1].end
 
     def to_dict(self) -> dict[str, Any]:
-        """Return a JSON-serializable representation; :meth:`from_dict` reverses it."""
+        """Return a JSON-serializable representation; `from_dict()` reverses it."""
         data: dict[str, Any] = {'raw': self.raw, 'text': self._text}
         if self._starts is not None:
             data['alignment'] = {'starts': self._starts, 'ends': self._ends}

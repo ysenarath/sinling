@@ -145,7 +145,7 @@ def evaluate(task: str, dataset: str | Path, backend: str | None = None, *, text
              **config: Any) -> Report:
     """Score ``backend`` (the task's default if None) for ``task`` on ``dataset``.
 
-    ``dataset`` is a registered name (see :func:`datasets`) or a path to a CoNLL-U file.
+    ``dataset`` is a registered name (see `datasets()`) or a path to a CoNLL-U file.
     ``text='detokenized'`` (default) removes treebank spaces around punctuation first;
     ``text='given'`` uses each sentence's text as written in the file.
 

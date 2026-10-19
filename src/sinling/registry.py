@@ -1,8 +1,8 @@
 """Tasks, backends and the registry that connects them.
 
 A *task* is something Sinling can do (``normalize``, ``tokenize``, ``ner``). A *backend* is
-one way of doing it, implemented as a :class:`Backend` subclass. Built-in backends register
-with the :func:`register` decorator; plugins register through the ``sinling.backends``
+one way of doing it, implemented as a `Backend` subclass. Built-in backends register
+with the `register()` decorator; plugins register through the ``sinling.backends``
 entry-point group, named ``<task>.<backend>``::
 
     [project.entry-points."sinling.backends"]
@@ -42,7 +42,7 @@ class Task:
 
 
 class Backend:
-    """Base class for backends. Subclasses annotate a :class:`Doc` in ``__call__``.
+    """Base class for backends. Subclasses annotate a `Doc` in ``__call__``.
 
     Class attributes describe the backend: the optional-dependency ``extra`` that installs
     what it ``requires`` (importable module names), and the ``resources`` it downloads on
@@ -64,7 +64,7 @@ class Backend:
 
 @dataclass(frozen=True)
 class BackendInfo:
-    """What :func:`backends` reports about a backend.
+    """What `backends()` reports about a backend.
 
     ``downloads`` names the resources fetched on first use; an empty tuple means the backend
     works without any download. For a plugin that hasn't been loaded yet, ``extra``,

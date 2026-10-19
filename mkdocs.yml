@@ -1,0 +1,62 @@
+site_name: Sinling
+site_description: A language processing toolkit for Sinhala
+repo_url: https://github.com/ysenarath/sinling
+repo_name: ysenarath/sinling
+edit_uri: edit/0.4-dev/docs/source/
+docs_dir: docs/source
+site_dir: build/site
+strict: true
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.sections
+    - search.suggest
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            show_root_heading: true
+            show_symbol_type_heading: true
+            members_order: source
+            docstring_style: google
+            merge_init_into_class: true
+
+nav:
+  - Home: index.md
+  - Guide:
+      - Normalization: guide/normalization.md
+      - Tokens and sentences: guide/tokens-and-sentences.md
+      - Stemming: guide/stemming.md
+      - Legacy fonts: guide/legacy-fonts.md
+      - Documents and pipelines: guide/documents-and-pipelines.md
+      - Downloads and offline use: guide/downloads.md
+      - Evaluation: guide/evaluation.md
+      - Writing a plugin: guide/plugins.md
+  - Migrating from 0.3: migration.md
+  - API reference: api.md
