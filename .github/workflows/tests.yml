@@ -1,0 +1,31 @@
+# Runs the test suite on every push and pull request. It only tests; releases are
+# published from the maintainer's machine.
+
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13', '3.14']
+
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install the package
+      run: python -m pip install .
+    - name: Run tests
+      # -P keeps the checkout off sys.path, so the tests import the installed package
+      run: python -P -m unittest discover -s tests -t tests -v

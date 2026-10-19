@@ -1,3 +1,0 @@
-include packages.txt
-graft sinling/resources
-global-exclude *.pyc
