@@ -12,6 +12,21 @@ All java code is ported to Python implementation for convenience.`
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ysenarath/sinling.git/master?filepath=notebooks%2Fexamples.ipynb)
 [![PyPI version](https://badge.fury.io/py/sinling.svg)](https://badge.fury.io/py/sinling)
 
+## Versions
+
+The current release is **0.3.6**, and the usage examples below describe its API.
+
+Sinling **0.4** will be a redesign with a new API, and it will **not be backward compatible** with 0.3.
+The 0.3 API (`SinhalaTokenizer`, `SinhalaStemmer`, `POSTagger`, `word_joiner`, `word_splitter` and `preprocess`) will be removed in 0.4 without a deprecation period.
+
+If your code uses the 0.3 API, pin the version before 0.4 is released:
+
+`pip install "sinling<0.4"`
+
+or, in `requirements.txt`:
+
+`sinling<0.4`
+
 ## Installation
 
 Run the following command in your virtualenv to install this package.
