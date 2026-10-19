@@ -38,8 +38,11 @@ stemmer = SinhalaStemmer()
 
 word = '...'  # your sentence
 
-stemmer.stem(word)
+stemmer.stem(word)  # returns (base, suffix)
 ```
+
+The stemmer looks words up in a stem dictionary first and falls back to stripping the longest known suffix.
+Pass `SinhalaStemmer(use_dictionary=False)` to use suffix stripping only.
 
 Please cite [sinhala-stemmer](https://github.com/rksk/sinhala-news-analysis/tree/master/sinhala-stemmer) if you are using this implementation.
 
