@@ -29,7 +29,8 @@ ABBREVIATIONS = (
 _SINHALA_LETTERS = f'{chr(0x0D81)}-{chr(0x0DF3)}'  # the Sinhala block without the kunddaliya
 _COMBINING = f'{chr(0x0300)}-{chr(0x036F)}'
 _W = rf'\w{_SINHALA_LETTERS}{_COMBINING}'  # word characters
-_JOINERS = '\N{ZERO WIDTH NON-JOINER}\N{ZERO WIDTH JOINER}'
+_ZWJ = '\N{ZERO WIDTH JOINER}'
+_JOINERS = '\N{ZERO WIDTH NON-JOINER}' + _ZWJ
 _WORD = rf'[{_W}](?:[{_W}]|[{_JOINERS}](?=[{_W}]))*'  # joiners only inside a word
 _EMOJI_BASE = r'[\U0001F300-\U0001FAFF\U00002600-\U000027BF\U00002B00-\U00002BFF]'
 _EMOJI_MODS = r'[\U0000FE0F\U0001F3FB-\U0001F3FF]*'
@@ -40,7 +41,7 @@ _TOKEN_PATTERNS = [
     ('mention', rf'(?<![{_W}])@{_WORD}'),
     ('hashtag', rf'(?<![{_W}])#{_WORD}'),
     ('emoji', rf'[\U0001F1E6-\U0001F1FF]{{2}}|{_EMOJI_BASE}{_EMOJI_MODS}'
-              rf'(?:\N{{ZERO WIDTH JOINER}}{_EMOJI_BASE}{_EMOJI_MODS})*'),
+              rf'(?:{_ZWJ}{_EMOJI_BASE}{_EMOJI_MODS})*'),
     ('abbreviation', None),  # built per backend from its abbreviation list
     ('number', rf'\d+(?:[.,:/]\d+)*(?![{_W}])'),
     ('word', _WORD),
