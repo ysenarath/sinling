@@ -6,6 +6,7 @@ reaches the cap.
 """
 
 import hashlib
+import http.client
 import json
 import os
 import threading
@@ -19,6 +20,12 @@ URL = 'https://openrouter.ai/api/v1/chat/completions'
 CAP_USD = float(os.environ.get('TRANSLATION_BUDGET_USD', '5.0'))
 CACHE = DATA / 'cache'
 SPEND = DATA / 'spend.json'
+OPENAI_EFFORT = os.environ.get('OPENAI_REASONING_EFFORT', 'none')
+# Models whose reasoning can't be switched off; they get the lowest effort instead.
+REASONING_REQUIRED = ('anthropic/claude-sonnet-5.5', 'anthropic/claude-opus-5.5', 'google/gemini-3.8-flash',
+                      'google/gemini-4-argon', 'openai/gpt-6.1-sol', 'z-ai/glm-5.3', 'meta/muse-spark-1.3')
+# Translation-only models that don't reason, and reject the setting.
+NO_REASONING = ('tencent/hy-mt2-',)
 _lock = threading.Lock()
 
 
@@ -50,7 +57,17 @@ def chat(model, messages, *, max_tokens=2048, temperature=0.0):
     body = {'model': model, 'messages': messages, 'max_tokens': max_tokens, 'temperature': temperature,
             'usage': {'include': True}}
     # Translation needs no hidden reasoning, which costs tokens and can use up max_tokens.
-    body['reasoning'] = {'effort': 'minimal'} if model.startswith('openai/gpt-5') else {'enabled': False}
+    if model.startswith('openai/'):
+        # OpenAI's reasoning models take no temperature, and their reasoning can only be turned down.
+        del body['temperature']
+    if model.startswith(REASONING_REQUIRED):
+        body['reasoning'] = {'effort': 'low'}
+    elif model.startswith('openai/'):
+        body['reasoning'] = {'effort': OPENAI_EFFORT}
+    elif not model.startswith(NO_REASONING):
+        body['reasoning'] = {'enabled': False}
+    if model.startswith('anthropic/'):
+        del body['temperature']  # current Claude models on OpenRouter take no temperature
     # Only route to providers that honour every setting above (some ignore the reasoning switch).
     body['provider'] = {'require_parameters': True}
     key = hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
@@ -77,7 +94,7 @@ def chat(model, messages, *, max_tokens=2048, temperature=0.0):
                 time.sleep(2 ** attempt * 3)
                 continue
             raise RuntimeError(f'{model}: HTTP {e.code}: {e.read()[:300]!r}') from e
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, http.client.IncompleteRead):
             if attempt < 5:
                 time.sleep(2 ** attempt * 3)
                 continue

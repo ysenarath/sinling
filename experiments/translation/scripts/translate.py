@@ -1,4 +1,4 @@
-"""Translate FLORES English into Sinhala with an LLM under five setups.
+"""Translate FLORES English into Sinhala with an LLM under seven setups.
 
     base      the sentence alone
     glossary  + matching glossary terms (Wikidata, Wiktionary)
@@ -6,8 +6,13 @@
     both      + glossary and examples
     checks    both, then automatic checks alone drive up to two revisions
     review    both, then automatic checks and a grammar review drive up to two revisions
+    polish    base, then a Sinhala editor pass that fixes only what sounds unnatural
 
-Usage: python translate.py MODEL SETUP [--split devtest] [--limit N] [--workers 8]
+System prompts: v1; v2, which asks for natural Sinhala rather than a close translation; and v3, which
+keeps the close translation but asks for Sinhala word order, common words and spoken Sinhala in quotes.
+
+Usage: python translate.py MODEL SETUP [--split devtest] [--limit N] [--workers 8] [--prompt v1]
+                           [--direction en-si]
 """
 
 import argparse
@@ -22,12 +27,43 @@ import sinling
 from common import GLOSSARY, RUNS, STOPWORDS, WORD, flores, read_jsonl, write_jsonl
 from openrouter import BudgetExceeded, chat
 
-SETUPS = ('base', 'glossary', 'examples', 'both', 'checks', 'review')
+SETUPS = ('base', 'glossary', 'examples', 'both', 'checks', 'review', 'polish')
 MAX_TERMS, N_EXAMPLES, MAX_ROUNDS = 8, 4, 2
 
 SYSTEM = ('You are a professional English-to-Sinhala translator. Translate the English text into natural, '
           'accurate written Sinhala, as used in Sri Lankan newspapers. Keep every piece of meaning and every '
           'number. Write names in Sinhala script. Output only the Sinhala translation.')
+# v2 (2026-10-20): v1 output kept the meaning but read like a translation, not like Sinhala a person
+# would write or say, so v2 asks for Sinhala sentence structure and spoken Sinhala inside quotes.
+SYSTEM_V2 = ('You are a Sri Lankan journalist who writes Sinhala as a first language and reads English fluently. '
+             'Write the meaning of the English text in Sinhala the way you would write it for Sinhala readers: '
+             'natural Sinhala sentence structure and the words people actually use, not a word-for-word '
+             'translation. Reorder or split clauses wherever that reads better. Keep every piece of meaning and '
+             'every number. Write names in Sinhala script, spelled as Sinhala media spell them. Use written '
+             'Sinhala, except inside quotation marks: there, write what was said the way a Sinhala speaker would '
+             'say it. Output only the Sinhala text.')
+# v3 (2026-10-20): v2 invented words and slipped into spoken forms, so v3 keeps v1's close
+# translation and only fixes word order, word choice and quoted speech.
+SYSTEM_V3 = ('You are a professional English-to-Sinhala translator. Translate the English text into accurate '
+             'written Sinhala, as used in Sri Lankan newspapers, that reads as if it had been written in Sinhala. '
+             'Stay close to the meaning of every phrase, but put clauses in the order Sinhala uses, with the main '
+             'verb at the end, and split a long sentence if that reads better. Use the common words a Sinhala '
+             'newspaper would use; never make up a word. If there is no common Sinhala word for a term, write the '
+             'English term in Sinhala script. Keep every piece of meaning and every number. Write names in Sinhala '
+             'script. Inside quotation marks, write what was said in spoken Sinhala; everywhere else, use written '
+             'Sinhala. Output only the Sinhala translation.')
+PROMPTS = {'v1': SYSTEM, 'v2': SYSTEM_V2, 'v3': SYSTEM_V3}
+# The other direction, for comparison and for back-translation.
+SYSTEM_SI_EN = ('You are a professional Sinhala-to-English translator. Translate the Sinhala text into natural, '
+                'accurate English. Keep every piece of meaning and every number. Output only the English '
+                'translation.')
+
+POLISH = ('You are a Sinhala newspaper editor. A translator has turned an English sentence into Sinhala. Edit the '
+          'Sinhala so that it reads as if a Sinhala journalist had written it: fix word order, wording that sounds '
+          'translated, and wrong or unusual word forms. Change only what sounds unnatural, and keep it unchanged if '
+          'it already reads well. Keep every piece of meaning, every name and every number, never make up a word, '
+          'and keep written Sinhala except inside quotation marks, where spoken Sinhala is right. Output only the '
+          'edited Sinhala.')
 
 # Draft checklist for the grammar review; to be reviewed by a native speaker.
 CHECKLIST = '''1. The register is written Sinhala throughout, not spoken forms (e.g. "කරයි", not "කරනවා").
@@ -139,9 +175,18 @@ def examples_text(indices, dev_en, dev_si):
 
 # ---------- prompts ----------
 
-def translation_messages(sentence, context):
-    parts = context + [f'Translate into Sinhala:\n{sentence}']
-    return [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': '\n\n'.join(parts)}]
+def translation_messages(sentence, context, prompt='v1'):
+    """Messages for one translation; prompt 'si-en' translates Sinhala into English instead."""
+    if prompt == 'si-en':
+        system, parts = SYSTEM_SI_EN, context + [f'Translate into English:\n{sentence}']
+    else:
+        system, parts = PROMPTS[prompt], context + [f'Translate into Sinhala:\n{sentence}']
+    return [{'role': 'system', 'content': system}, {'role': 'user', 'content': '\n\n'.join(parts)}]
+
+
+def polish_messages(sentence, translation):
+    return [{'role': 'system', 'content': POLISH},
+            {'role': 'user', 'content': f'English:\n{sentence}\n\nSinhala translation:\n{translation}'}]
 
 
 def review_messages(sentence, translation):
@@ -210,7 +255,7 @@ def parse_issues(reply):
 
 # ---------- one sentence ----------
 
-def translate_one(model, setup, sentence, glossary, bm25, dev):
+def translate_one(model, setup, sentence, glossary, bm25, dev, prompt='v1'):
     context, terms = [], []
     if setup in ('glossary', 'both', 'checks', 'review'):
         terms = match_terms(sentence, glossary)
@@ -219,8 +264,12 @@ def translate_one(model, setup, sentence, glossary, bm25, dev):
     if setup in ('examples', 'both', 'checks', 'review'):
         context.append(examples_text(bm25.top(sentence, N_EXAMPLES), *dev))
 
-    text, cost, _ = chat(model, translation_messages(sentence, context))
+    text, cost, _ = chat(model, translation_messages(sentence, context, prompt))
     record = {'terms': [p for p, _ in terms], 'rounds': []}
+    if setup == 'polish':
+        record['draft'] = text
+        text, c, _ = chat(model, polish_messages(sentence, text))
+        return text, cost + c, record
     if setup not in ('checks', 'review'):
         return text, cost, record
 
@@ -251,11 +300,21 @@ def main():
     parser.add_argument('--split', default='devtest', choices=('dev', 'devtest'))
     parser.add_argument('--limit', type=int)
     parser.add_argument('--workers', type=int, default=8)
+    parser.add_argument('--direction', default='en-si', choices=('en-si', 'si-en'),
+                        help='si-en runs only the base setup, and is saved under data/runs/si-en/')
+    parser.add_argument('--prompt', default='v1', choices=PROMPTS,
+                        help='system prompt version; runs other than v1 are saved as SETUP-VERSION_SPLIT.jsonl')
     args = parser.parse_args()
+    if args.prompt != 'v1' and args.setup in ('checks', 'review'):
+        parser.error('revisions still use the v1 prompt, so only base, glossary, examples and both take --prompt')
+    if args.direction == 'si-en' and (args.setup != 'base' or args.prompt != 'v1'):
+        parser.error('si-en has only the base setup and its own prompt')
     if args.split == 'dev' and args.setup in ('examples', 'both', 'checks', 'review'):
         parser.error('examples come from dev, so these setups must be run on devtest')
 
     src, ref = flores(args.split)
+    if args.direction == 'si-en':
+        src, ref = ref, src
     src, ref = src[:args.limit], ref[:args.limit]
     dev = flores('dev')
     glossary = load_glossary() if args.setup in ('glossary', 'both', 'checks', 'review') else None
@@ -263,7 +322,8 @@ def main():
 
     def work(i):
         try:
-            hyp, cost, record = translate_one(args.model, args.setup, src[i], glossary, bm25, dev)
+            prompt = 'si-en' if args.direction == 'si-en' else args.prompt
+            hyp, cost, record = translate_one(args.model, args.setup, src[i], glossary, bm25, dev, prompt)
         except BudgetExceeded:
             return None
         return {'id': i, 'src': src[i], 'ref': ref[i], 'hyp': hyp, 'cost': cost, **record}
@@ -271,9 +331,11 @@ def main():
     with ThreadPoolExecutor(args.workers) as pool:
         rows = list(pool.map(work, range(len(src))))
     done = [r for r in rows if r is not None]
-    out = RUNS / args.model.replace('/', '__') / f'{args.setup}_{args.split}{"_" + str(args.limit) if args.limit else ""}.jsonl'
+    name = args.setup if args.prompt == 'v1' else f'{args.setup}-{args.prompt}'
+    runs = RUNS / 'si-en' if args.direction == 'si-en' else RUNS
+    out = runs / args.model.replace('/', '__') / f'{name}_{args.split}{"_" + str(args.limit) if args.limit else ""}.jsonl'
     write_jsonl(out, done)
-    print(f'{args.model} {args.setup}: {len(done)}/{len(src)} sentences, ${sum(r["cost"] for r in done):.4f} '
+    print(f'{args.model} {name}: {len(done)}/{len(src)} sentences, ${sum(r["cost"] for r in done):.4f} '
           f'-> {out.relative_to(RUNS.parent.parent)}')
     if len(done) < len(src):
         print('stopped early: spending cap reached')

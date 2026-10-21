@@ -105,3 +105,86 @@ Limits of this experiment:
 For Sinling's `translate()`: retrieving similar translated examples is worth building. A glossary
 should be something users supply for their own domain, not filled automatically from Wikidata. The
 review loop should be off by default; whether a stronger reviewer model helps is untested.
+
+## Prompt v2: natural Sinhala
+
+The original prompt (v1, above) is unchanged. A native speaker rated seven of DeepSeek v4.1 Flash's
+lowest-scoring v1 translations. Six kept the meaning, but read like a translation rather than
+Sinhala a person would write or say. Prompt v2 (`--prompt v2`, saved as `base-v2_*.jsonl`) asks
+for Sinhala sentence structure, everyday words, and spoken Sinhala inside quotation marks.
+
+Run on 2026-10-20: the first 100 FLORES-200 `dev` sentences, plain setup.
+
+| Model | v1 | v2 | v2 − v1 (95% interval) |
+| --- | --- | --- | --- |
+| DeepSeek v4.1 Flash | 48.6 | 43.6 | −5.0 (−6.2 to −3.6) |
+| Gemini 3.8 Flash | 48.4 | 43.0 | −5.4 (−6.7 to −4.0) |
+| Gemini 4 Argon | 49.8 | 43.2 | −6.7 (−8.1 to −5.1) |
+| GPT-6 Luna | 47.9 | 44.1 | −3.8 (−4.9 to −2.8) |
+
+- **chrF++ drops for every model.** That is expected: the human references are fairly close
+  translations, so freer Sinhala shares less with them. It doesn't show whether v2 reads better.
+- **Blind side-by-side, DeepSeek, 4 sentences:** v2 preferred twice, v1 twice. Too few to call.
+- **v2 fixes some unnatural phrasing:** කිසිවෙකු සිටියේ නැත for කිසිවෙකු නොවීය.
+- **v2 also makes new mistakes:**
+  - invented words: යෝධයෙන් කියා සිටියේ, විලික්කුම්;
+  - spoken verb forms outside quotes: පිවිසුණා.
+
+  Asking for freer wording seems to make the model guess more.
+
+To decide between the prompts, a larger blind comparison is needed, ideally with more than one
+rater. A middle-ground prompt is another option: keep v1's close translation, and only allow
+reordering and spoken Sinhala in quotes.
+
+## Prompt v3 and a polish step
+
+Two more ways to get natural Sinhala; v1 and v2 are unchanged.
+- **v3** (`--prompt v3`) keeps v1's close translation. It asks for Sinhala clause order and the
+  common words a newspaper would use, with no made-up words. Inside quotation marks it asks for
+  spoken Sinhala.
+- **polish** (setup `polish`) translates with v1, then asks the same model, as a Sinhala newspaper
+  editor, to fix only what sounds unnatural. The first draft is kept in each row's `draft` field.
+
+Run on 2026-10-20 on the first 100 `dev` sentences.
+
+"Unseen words" counts words that appear nowhere else: not in the FLORES references, the
+Wiktionary glossary, or the other models' v1 translations. It is a rough sign of made-up words.
+
+| Model | Version | chrF++ | vs v1 (95% interval) | Unseen words per 100 | Sentences unchanged from v1 | Cost per 100 |
+| --- | --- | --- | --- | --- | --- | --- |
+| DeepSeek v4.1 Flash | v1 | 48.6 | — | 1.2 | — | $0.007 |
+| | v2 | 43.6 | −5.0 (−6.2 to −3.6) | 2.5 | 0 | $0.006 |
+| | v3 | 46.5 | −2.1 (−3.0 to −1.1) | 1.4 | 4 | $0.012 |
+| | v1 + polish | 48.0 | −0.6 (−1.0 to −0.2) | 1.3 | 33 | $0.020 |
+| GPT-6 Luna | v1 | 47.9 | — | 1.7 | — | $0.005 |
+| | v2 | 44.1 | −3.8 (−4.9 to −2.8) | 2.6 | 2 | $0.006 |
+| | v3 | 46.6 | −1.3 (−2.6 to −0.1) | 1.9 | 1 | $0.006 |
+| | v1 + polish | 46.7 | −1.2 (−2.0 to −0.5) | 1.7 | 9 | $0.012 |
+
+- **v3 sits between v1 and v2.** It rewrites almost every sentence, but loses less chrF++ than v2.
+  It uses about as few unseen words as v1, against twice as many for v2. For example, v3 puts the
+  subject first and the verb last, with the English tense: ආලෝක කදම්බ දෙකක් රාත්‍රිය පුරා අහස දෙසට
+  යොමු වන පරිදි සවි කර ඇත.
+- **v3 can still shift the meaning.** It translated "implied" as අනුමාන කළේ ("guessed").
+- **polish changes little.** DeepSeek left a third of its sentences as they were and made small
+  edits to the rest. In one sentence the edit dropped ද ("also"), which loses meaning. It also
+  doubles the cost.
+- Only a blind comparison can show whether v3 or polish reads better than v1. On chrF++ alone, v1
+  still scores highest.
+
+## Sinhala to English
+
+`--direction si-en` translates the FLORES Sinhala side into English, with its own plain prompt.
+Runs are saved under `data/runs/si-en/`. Run on 2026-10-20 on the first 100 `dev` sentences.
+Scores are against the original English (not normalized), so they can't be compared directly with
+the English-to-Sinhala scores.
+
+| Model | chrF++ si→en | BLEU si→en | chrF++ en→si, same sentences |
+| --- | --- | --- | --- |
+| GPT-6 Luna | 61.2 | 33.8 | 47.9 |
+| DeepSeek v4.1 Flash | 59.3 | 30.5 | 48.6 |
+
+Translating into English scores more than 10 chrF++ points higher. The output also reads fluently,
+but fluency hides meaning errors. Both models read the name මා (Ma, a Taiwanese politician) as මා
+("I"): "I won on a platform…". For back-translation, this kind of error pairs Sinhala with the
+wrong English, so the back-translation model needs to be a strong one too.
